@@ -10,7 +10,7 @@ const count = ref(0)
 
 <template>
     <div class="">
-      <Button>CLICK ME SHAD</button>
+      <Button>CLICK ME SHAD</Button>
   
   </div>
 </template>
