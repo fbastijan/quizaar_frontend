@@ -1,15 +1,3 @@
-<script lang="ts">
-export const description
-  = 'A login form with email and password. There\'s an option to login with Google and a link to sign up if you don\'t have an account.'
-export const iframeHeight = '600px'
-export const containerClass = 'w-full h-screen flex items-center justify-center px-4'
-</script>
-<script setup lang="ts">
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-</script>
 <template>
   <Card class="mx-auto max-w-sm">
     <CardHeader>
@@ -21,7 +9,7 @@ import { Label } from '@/components/ui/label'
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <div class="grid gap-4">
+      <form class="grid gap-4" @submit.prevent="loginAccount(email, password)">
         <div class="grid gap-2">
           <Label for="email">Email</Label>
           <Input
@@ -29,6 +17,7 @@ import { Label } from '@/components/ui/label'
             type="email"
             placeholder="m@example.com"
             required
+            v-model="email"
           />
         </div>
         <div class="grid gap-2">
@@ -38,13 +27,12 @@ import { Label } from '@/components/ui/label'
               Forgot your password?
             </a>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" type="password" placeholder="******" required v-model="password"/>
         </div>
         <Button type="submit" class="w-full">
           Login
         </Button>
-        
-      </div>
+      </form>
       <div class="mt-4 text-center text-sm">
         Don't have an account?
         <a href="/register" class="underline">
@@ -54,3 +42,49 @@ import { Label } from '@/components/ui/label'
     </CardContent>
   </Card>
 </template>
+
+<script>
+import { useAccountStore } from '@/stores/account'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
+export default {
+  name: 'LoginView',
+  components: {
+    Button,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Input,
+    Label
+  },
+  setup() { 
+    const accountStore = useAccountStore()
+    return {
+      accountStore
+    }
+  },
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    loginAccount(email, password) {
+      this.accountStore.loginAccount(email, password)
+        .then(() => {
+          this.$router.push('/') // Redirect to dashboard after successful login
+        })
+        .catch((error) => {
+          console.error('Login failed:', error)
+          // Handle error (e.g., show a notification)
+        })
+    }
+  }
+}
+</script>

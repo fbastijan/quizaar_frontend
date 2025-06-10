@@ -5,6 +5,8 @@ import AboutView from '@/views/AboutView.vue'
 import QuizView from '@/views/QuizView.vue'
 import RegisterView from './views/authorization/RegisterView.vue'
 import LoginView from './views/authorization/LoginView.vue'
+
+
 const routes = [
   { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
@@ -18,4 +20,23 @@ const router = createRouter({
    history: createWebHistory(),
   routes,
 })
+
+
+
+ router.beforeEach((to, from, next) => {
+  const javneStranice = ["/login", "/register"];
+ 
+  const loginPotreban = !javneStranice.includes(to.path);
+  const user = localStorage.getItem("token")
+    
+  
+ 
+
+  if (loginPotreban && !user) {
+    next("/login");
+    return;
+  }
+  
+  next();
+});
 export default router

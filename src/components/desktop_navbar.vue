@@ -1,35 +1,4 @@
-<script setup lang="ts">
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
 
-const components: { title: string, href: string, description: string }[] = [
-  {
-    title: 'New Quiz',
-    href: '/quiz/new',
-    description:
-      'Start your quiz journey by creating a new quiz.',
-  },
-  {
-    title: 'See Past Quizzes',
-    href: '/quiz/list',
-    description:
-      'See what you already played.',
-  },
-  {
-    title: 'Join Quiz',
-    href: '/docs/components/progress',
-    description:
-      'Ask your quiz administrator for a code and join here.',
-  },
-]
-</script>
 
 <template>
   <div class="flex items-center justify-between w-full h-20 shrink-0 items-center px-4 md:px-6">
@@ -53,10 +22,10 @@ const components: { title: string, href: string, description: string }[] = [
         </NavigationMenuLink>
         
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Quiz</NavigationMenuTrigger>
+          <a href="/quiz"><NavigationMenuTrigger href="#" >Quiz</NavigationMenuTrigger> </a>
           <NavigationMenuContent>
             <ul class="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              <li v-for="component in components" :key="component.title">
+              <li v-for="component in nav_components" :key="component.title">
                 <NavigationMenuLink as-child>
                   <a
                     :href="component.href"
@@ -73,7 +42,7 @@ const components: { title: string, href: string, description: string }[] = [
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuLink href="/docs/introduction" :class="navigationMenuTriggerStyle()">
+          <NavigationMenuLink href="/about" :class="navigationMenuTriggerStyle()">
             About
           </NavigationMenuLink>
         </NavigationMenuItem>
@@ -91,7 +60,7 @@ Profile</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul class=" ">
 
-                    <li>
+                    <li  v-if="accountStore.accountData">
                 <NavigationMenuLink as-child>
                   <a>
                     Settings
@@ -100,8 +69,8 @@ Profile</NavigationMenuTrigger>
                 
                 </NavigationMenuLink>
               </li>
-              <li>
-                <NavigationMenuLink as-child>
+              <li  v-if="accountStore.accountData">
+                <NavigationMenuLink as-child href="#" @click="logOut()">  
                   <a>
                     Logout
                   </a>
@@ -111,8 +80,8 @@ Profile</NavigationMenuTrigger>
               </li>
           
 
-               <li>
-                <NavigationMenuLink as-child>
+               <li v-if="!accountStore.accountData">
+                <NavigationMenuLink as-child href="/login" >
                   <a>
                     Login
                   </a>
@@ -120,8 +89,8 @@ Profile</NavigationMenuTrigger>
                 
                 </NavigationMenuLink>
               </li>
-                  <li>
-                <NavigationMenuLink as-child>
+                  <li  v-if="!accountStore.accountData">
+                <NavigationMenuLink as-child href="/register">
                   <a>
                     Register
                   </a>
@@ -137,3 +106,62 @@ Profile</NavigationMenuTrigger>
     </NavigationMenu>
   </div>
 </template>
+<script>
+import { useAccountStore } from '@/stores/account'
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+
+export default {
+  name: 'DesktopNavbar',
+  components: {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+  },
+  setup() {
+    const accountStore = useAccountStore()
+    return {
+      accountStore,
+    }
+  },
+  data() {
+    return {
+      nav_components: [
+        {
+          title: 'New Quiz',
+          href: '/quiz/new',
+          description: 'Start your quiz journey by creating a new quiz.',
+        },
+        {
+          title: 'See Past Quizzes',
+          href: '/quiz/list',
+          description: 'See what you already played.',
+        },
+        {
+          title: 'Join Quiz',
+          href: '/docs/components/progress',
+          description: 'Ask your quiz administrator for a code and join here.',
+        },
+      ],
+     
+    }
+  },
+  methods: {
+    logOut() {
+
+      this.accountStore.logOut()
+    },
+    navigationMenuTriggerStyle,
+  },
+}
+</script>
