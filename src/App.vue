@@ -1,6 +1,8 @@
 
 <template>
-<div className="">
+<div >
+  <Toaster position="top-center" />
+  
   <div class="hidden lg:block">
     <DesktopNavbar  />
   </div>
@@ -13,18 +15,26 @@
 
 
 <script>
+import {Toaster } from '@/components/ui/sonner'
+import 'vue-sonner/style.css' 
 import DesktopNavbar from '@/components/desktop_navbar.vue'
 import MobileNavbar from './components/mobile_navbar.vue';
 import { useAccountStore } from '@/stores/account'
+
+
+
 export default {
  
   name: 'App',
   components: {
     DesktopNavbar,
-    MobileNavbar
+    MobileNavbar,
+
+    Toaster
   },
   setup() {
     const accountStore = useAccountStore()
+  
     
     if (localStorage.getItem("token") )
     {
@@ -35,7 +45,8 @@ export default {
       accountStore.accountData = null
     }
     return {
-      accountStore
+      accountStore,
+      
     }
 
 
