@@ -40,7 +40,7 @@
             <div class="text-right text-sm mt-1">Selected: <b>{{ difficultyLabel }}</b></div>
 
             <Label class="mt-3">Additional context</Label>
-            <Textarea id="description" placeholder="Do you want to specify anything?" class="h-24" v-model="parameters.context"/>
+            <Textarea id="description" placeholder="Do you want to specify anything?" class="h-24 resize-none" v-model="parameters.context"/>
           </div>
         </div>
       </form>

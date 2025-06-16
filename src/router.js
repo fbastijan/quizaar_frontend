@@ -6,7 +6,7 @@ import QuizView from '@/views/QuizView.vue'
 import RegisterView from './views/authorization/RegisterView.vue'
 import LoginView from './views/authorization/LoginView.vue'
 import NewQuiz from './views/quiz/NewQuiz.vue'
-
+import ActiveQuiz from './views/quiz/ActiveQuiz.vue'
 const routes = [
   { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
@@ -14,6 +14,7 @@ const routes = [
     {path: '/register', component: RegisterView }, // Redirect any unmatched routes to home
      {path: '/login', component: LoginView },
      {path: '/quiz/new', component: NewQuiz }, // Redirect any unmatched routes to home
+      {path: '/quiz/:join_code', component: ActiveQuiz }, // Redirect any unmatched routes to home
 
 ]
 

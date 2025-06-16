@@ -10,7 +10,7 @@
             <Label for="title">Title</Label>
             <Input id="title" placeholder="Title to your quiz" required v-model="title" />
             <Label for="title" class="mt-3" >Description</Label>
-            <Textarea id="description" placeholder="Description of your quiz" class="h-24" v-model="description" />
+            <Textarea id="description" placeholder="Description of your quiz" class="h-24 resize-none" v-model="description" />
           </div>
         
         </div>

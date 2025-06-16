@@ -59,7 +59,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Textarea } from '@/components/ui/textarea'
-
+import { useQuizStore } from "@/stores/quiz"
 import { Check, Circle, Dot } from 'lucide-vue-next'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
@@ -102,7 +102,8 @@ export default {
 
   },
   setup() {
-    // Setup logic can go here if needed
+    const quizStore = useQuizStore();
+    return { quizStore };
   },
 
   data() {
@@ -136,25 +137,22 @@ export default {
 
   methods: {
     async handleStart(parameters) {
+      let response;
         try {
           // Assuming you have a method to create a quiz
-          const response = await quizApi.createQuiz({quiz: {...this.GeneralQuizForm}});
+           response = await this.quizStore.createQuiz( {quiz: {...this.GeneralQuizForm}}, parameters);
 
-          console.log('Quiz created:', response.data.data.id);
-          const questions = await quizApi.generateQuestions(response.data.data.id, {
-            topic: parameters.topic, // Example topic
-            number: parameters.questions, // Example number of questions
-            difficulty: parameters.difficulty, // Example difficulty
-            description: parameters.context // Example context
-          });
-          
+         
+                   // Redirect to the quiz list or another page
            // Handle the response as needed
-          console.log('Quiz created successfully:', response, questions);
+          console.log('Quiz created successfully:', response);
            // Redirect to the quiz list or another page
         } catch (error) {
           console.error('Error creating quiz:', error);
           // Handle error (e.g., show a toast notification)
         }
+
+        
     },
       handleNext(formData) {
     // formData contains { title, description }

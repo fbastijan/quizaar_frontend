@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { Button } from '@/components/ui/button'
 
 import {
@@ -13,6 +13,10 @@ import {
   
 } from '@/components/ui/sheet'
 import { navigationMenuTriggerStyle } from './ui/navigation-menu';
+
+
+import { useAccountStore } from '@/stores/account'
+const accountStore = useAccountStore()
 </script>
 
 <template>
@@ -51,7 +55,7 @@ import { navigationMenuTriggerStyle } from './ui/navigation-menu';
     
         <ul>
           <li>
-            <router-link to="/" class="ms-6 flex w-full items-center py-2 text-lg font-semibold">
+            <router-link to="/" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" >
                 Home
             </router-link>
             </li>
@@ -65,7 +69,53 @@ import { navigationMenuTriggerStyle } from './ui/navigation-menu';
                 About
             </router-link>
             </li>
+             <br>
+            <li>
+            <router-link to="/login" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore">
+                Login
+            </router-link>
+            </li>
+            <li>
+            <router-link to="/register" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore">
+                Register
+            </router-link>
+            </li>
+           
+              <li>
+            <router-link to="/settings" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="accountStore">
+                Settings
+            </router-link>
+            </li>
+             <li>
+            <a class="ms-6 flex w-full items-center py-2 text-lg font-semibold" href="#" v-if="accountStore" @click="logOut">
+                Logout
+            </a>
+            </li>
+
         </ul>
     </SheetContent>
   </Sheet>
 </template>
+
+<script>
+import auth from '@/api/account.api';
+export default {
+  name: 'MobileNavbar',
+  methods: {
+    logOut() {
+      auth.logOut().then(() => {
+        this.$router.push('/login');
+      }).catch((error) => {
+        console.error('Logout failed:', error);
+      });
+    }
+  },
+
+
+
+};
+
+
+
+
+</script>
