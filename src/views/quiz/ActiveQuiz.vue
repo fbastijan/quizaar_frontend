@@ -1,12 +1,23 @@
 <template>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:mx-50">
     
-    <QuizQuestions class="lg:col-span-2" :questions=" this.activeQuiz.questions.data" @delete-question="deleteQuestion" @update-question="openUpdateDialog"/>
-    <Button class="mb-4" @click="openAddDialog()">Add Question</Button>
+    <QuizQuestions v-if="activeQuiz && activeQuiz.questions && activeQuiz.questions.data" class="lg:col-span-2" :questions=" this.activeQuiz.questions.data" @delete-question="deleteQuestion" @update-question="openUpdateDialog" @add-question="openAddDialog"/>
+  
   <div class="bg-white shadow-md rounded-lg p-6">
-    <h2 class="text-xl font-semibold mb-4">Quiz Settings</h2>
-    <p class="text-gray-700 mb-4">Adjust your quiz settings.</p>
-    <Button>Settings</Button>
+      <div>
+    <h2 class="text-xl font-semibold mb-4">Active Users</h2>
+    <ul class="space-y-2">
+      <li v-for="user in addedPlayers" :key="user.id" class="flex items-center justify-between">
+         <span :class="isPlayerReady(user) ? 'text-green-600 font-bold' : 'text-gray-400'"> {{ user.name }}</span>
+     
+
+          <Button variant="destructive" size="icon" class="px-1 py-1 text-xs h-6 min-w-0"  @click="deleteQuestion(question.id)">
+      <Trash2 class="size-4" />
+    </Button>
+      </li>
+    </ul>
+      </div>
+    
   </div>
  <UpdateQuestionDialog
   v-model="showDialog"
@@ -34,6 +45,10 @@ import { Button } from '@/components/ui/button'
 import UpdateQuestionDialog from '@/components/QuestionDialog.vue'
 import { useQuizStore } from '@/stores/quiz'
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { toast } from 'vue-sonner'
+import { useSocketStore } from '@/stores/socket';
+import { Trash2 } from 'lucide-vue-next';
+
 
 
 
@@ -58,12 +73,12 @@ export default {
         Input,
         Label,
        UpdateQuestionDialog,
-       
+       Trash2,
         QuizQuestions
     },  
     setup() {
     const quizStore = useQuizStore();
-
+      const socketStore = useSocketStore();
      const showDialog = ref(false)
     const selectedQuestion = ref(null)
 
@@ -91,6 +106,7 @@ export default {
             closeDialog()
          
     }
+  
     return {
       quizStore,
       showDialog,
@@ -98,30 +114,96 @@ export default {
       openUpdateDialog,
       closeDialog,
       saveQuestion,
-      openAddDialog
+      openAddDialog,
+      socketStore
     };
   },
   data() {
     return {
         questions: [],
+        activeUsers: [],
+        addedPlayers: [],
     };
   },
 
 
 
-   async created() {
-        // Fetch questions when the component is mounted
-       console.log(this.activeQuiz);
-
+  async created() {
+ 
        if (!this.activeQuiz || !this.activeQuiz.questions.data) {
           await  this.getQuiz()}
-     
-        // If you need to access the ID specifically
-  
+
+         await this.fetchPlayers();
+
+    },
+    async mounted() {
+
+           
+            try {
+            let res = await this.socketStore.joinChannel(`quiz:${this.$route.params.join_code}`, {token: localStorage.getItem('token')});
+            console.log('Joined channel:', res);
+           
+            } catch (error) { 
+        
+            console.log(error);
+        }
+
+
+        // Initialize presence tracking
       
+
+        
+        this.socketStore.presence.onSync(() => {
+            this.activeUsers = this.socketStore.presence.list((id, { metas: [firstMeta] }) => ({
+                id,
+                ...firstMeta,
+            }));
+            console.log('Active users:', this.activeUsers);
+        });
+
+        this.socketStore.presence.onJoin((id, currentPresence, newPresence) => {
+            toast.success(`${newPresence.metas[0].user_name} joined the quiz!`, {
+                description: `User ID: ${id}`,
+                position: "bottom-right"
+                
+            });
+            
+        });
+     
     },
    
   methods: {
+   async fetchPlayers() {
+  try {
+    const resp = await this.socketStore.push('get_players', { quiz_id: this.activeQuiz.id });
+    // If resp is an array, get the last element
+    let players = resp;
+      console.log('Response from get_players:', resp);
+    if (Array.isArray(resp)) {
+      players = resp[resp.length - 1]?.response?.players || [];
+    } else if (resp?.players) {
+      players = resp.players;
+    }
+    this.addedPlayers = players;
+    console.log('Added players:', this.addedPlayers);
+  } catch (error) {
+    console.error('Error fetching players:', error);
+  }
+
+},
+  isPlayerReady(addedPlayer) {
+    // Find a matching active user by a unique property (e.g., session_id or user_id)
+    const match = this.activeUsers.find(user => {
+      // Compare by session_id or user_id as appropriate
+      return user.id === addedPlayer.session_id || user.id === addedPlayer.user_id
+      
+    });
+    // If found, check if any of their metas are ready
+    return match ? match.ready : false;
+  },
+
+
+
    async getQuiz() {
      let res = await this.quizStore.fetchQuiz(this.$route.params.join_code);
      console.log('Quiz fetched:', res);
@@ -152,8 +234,11 @@ export default {
   computed: {
   activeQuiz() {
     return this.quizStore.activeQuiz
-  }
+  },
+  
+  
 }
+
 };
 
 </script>

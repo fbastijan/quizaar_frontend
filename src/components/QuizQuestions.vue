@@ -1,6 +1,6 @@
 <template>  
   <div class="bg-white shadow-md rounded-lg p-6 lg:col-span-2">
-    <h2 class="text-xl font-semibold mb-4">Questions</h2>
+   <div class="flex justify-between items-center mb-4" > <h2 class="text-xl font-semibold">Questions</h2>  <Button @click="this.$emit('add-question');"> Add Question</Button></div>
     <div
       v-for="(question, idx) in paginatedQuestions"
       :key="question.id"
@@ -26,7 +26,7 @@
     </div>
 <div class="flex justify-between mt-4">
   <Button :disabled="current_page === 1" @click="previousPage">Previous</Button>
-  <span>Page {{ current_page }} of {{ totalPages }}</span>
+  <span class="text-sm font-semibold">Page {{ current_page }} of {{ totalPages }}</span>
   <Button :disabled="!isThereNextPage" @click="nextPage">Next</Button>
 </div>
   </div>

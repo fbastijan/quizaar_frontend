@@ -20,6 +20,7 @@ import 'vue-sonner/style.css'
 import DesktopNavbar from '@/components/desktop_navbar.vue'
 import MobileNavbar from './components/mobile_navbar.vue';
 import { useAccountStore } from '@/stores/account'
+import { useSocketStore } from './stores/socket';
 
 
 
@@ -34,7 +35,7 @@ export default {
   },
   setup() {
     const accountStore = useAccountStore()
-  
+    const socketStore = useSocketStore()
     
     if (localStorage.getItem("token") )
     {
@@ -46,12 +47,23 @@ export default {
     }
     return {
       accountStore,
+      socketStore
+      
       
     }
 
 
-  }
+  },
   
+ async mounted() {
+  try {
+    console.log("Connecting to socket...");
+     await  this.socketStore.connect();
+ 
+  }catch(e) {
+    console.error("Error connecting to socket:", e);
+  }
+  },
 }
 
 

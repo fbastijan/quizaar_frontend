@@ -7,6 +7,8 @@ import RegisterView from './views/authorization/RegisterView.vue'
 import LoginView from './views/authorization/LoginView.vue'
 import NewQuiz from './views/quiz/NewQuiz.vue'
 import ActiveQuiz from './views/quiz/ActiveQuiz.vue'
+import JoinQuiz from './views/quiz/JoinQuiz.vue'
+import Lobby from './views/quiz/QuizLobby.vue'
 const routes = [
   { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
@@ -14,7 +16,10 @@ const routes = [
     {path: '/register', component: RegisterView }, // Redirect any unmatched routes to home
      {path: '/login', component: LoginView },
      {path: '/quiz/new', component: NewQuiz }, // Redirect any unmatched routes to home
-      {path: '/quiz/:join_code', component: ActiveQuiz }, // Redirect any unmatched routes to home
+      {path: '/quiz/active/:join_code', component: ActiveQuiz }, // Redirect any unmatched routes to home
+      {path: '/quiz/join' ,component: JoinQuiz },
+      {path: "/quiz/lobby/:join_code", component: Lobby }, // Redirect any unmatched routes to home
+      
 
 ]
 
@@ -25,25 +30,30 @@ const router = createRouter({
 
 import { toast } from 'vue-sonner'
 
- router.beforeEach((to, from, next) => {
-  const javneStranice = ["/login", "/register"];
- 
-  const loginPotreban = !javneStranice.includes(to.path);
-  const user = localStorage.getItem("token")
-    
+router.beforeEach((to, from, next) => {
+  const javneStranice = [
+    /^\/login$/,
+    /^\/register$/,
+    /^\/quiz\/join$/,
+    /^\/quiz\/lobby(\/[^/]+)?$/, // matches /quiz/lobby and /quiz/lobby/:join_code
   
- 
+  ];
+
+  const isJavnaStranica = (path) =>
+    javneStranice.some(pattern => pattern.test(path));
+
+  const loginPotreban = !isJavnaStranica(to.path);
+  const user = localStorage.getItem("token");
 
   if (loginPotreban && !user) {
-
-    toast('You are not authorized!', {
+    toast.error('You are not authorized!', {
       description: 'Please log in to continue.',
       duration: 2000,
-    })
+    });
     next("/login");
     return;
   }
-  
+
   next();
 });
 export default router

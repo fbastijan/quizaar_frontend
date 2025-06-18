@@ -45,7 +45,7 @@ export const useQuizStore = defineStore('quiz', {
             description: parameters.context // Example context
           });
             newQuiz.questions = questions.data; // Assuming the response contains the questions
-             router.push("/quiz/" +newQuiz.data.join_code);
+             router.push("/quiz/active/" +newQuiz.data.join_code);
 
             return newQuiz; 
         } catch (error) {

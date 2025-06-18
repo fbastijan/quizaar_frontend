@@ -149,7 +149,7 @@ export default {
         },
         {
           title: 'Join Quiz',
-          href: '/docs/components/progress',
+          href: '/quiz/join',
           description: 'Ask your quiz administrator for a code and join here.',
         },
       ],
