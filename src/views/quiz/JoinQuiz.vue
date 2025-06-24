@@ -46,9 +46,10 @@ export default {
     },
     methods: {
         joinQuiz() {
-            this.$router.push("/quiz/lobby" + this.joinCode, {
-                query: { username: this.username }
-            })
+             this.$router.push({
+            path: "/quiz/lobby/" + this.joinCode,
+            query: { name: this.username }
+        })
         }
 
         

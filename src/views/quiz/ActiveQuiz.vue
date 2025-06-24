@@ -5,20 +5,28 @@
   
   <div class="bg-white shadow-md rounded-lg p-6">
       <div>
-    <h2 class="text-xl font-semibold mb-4">Active Users</h2>
+        <div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-semibold mb-4">Active Users</h2> 
+    <span class="text-sm text-gray-500 mb-2">Users ready: {{ countReadyUsers }}/{{ addedPlayers.length }}</span>
+
+    </div>
     <ul class="space-y-2">
       <li v-for="user in addedPlayers" :key="user.id" class="flex items-center justify-between">
          <span :class="isPlayerReady(user) ? 'text-green-600 font-bold' : 'text-gray-400'"> {{ user.name }}</span>
      
 
-          <Button variant="destructive" size="icon" class="px-1 py-1 text-xs h-6 min-w-0"  @click="deleteQuestion(question.id)">
+          <Button variant="destructive" size="icon" class="px-1 py-1 text-xs h-6 min-w-0"  @click="deletePlayer(user.id)">
       <Trash2 class="size-4" />
     </Button>
       </li>
     </ul>
       </div>
-    
+     
   </div>
+   <div class="mt-6 flex justify-end col-span-3">
+  <Button class="px-6" @click="startQuiz" :disabled="!canStartQuiz">Start Quiz</Button>
+</div>
+
  <UpdateQuestionDialog
   v-model="showDialog"
   :question="selectedQuestion"
@@ -27,6 +35,7 @@
 
 
 </div>
+
 </template>
 
 
@@ -162,17 +171,61 @@ export default {
         });
 
         this.socketStore.presence.onJoin((id, currentPresence, newPresence) => {
-            toast.success(`${newPresence.metas[0].user_name} joined the quiz!`, {
-                description: `User ID: ${id}`,
+            if (currentPresence && Object.keys(currentPresence).length > 0 && newPresence.metas[0].ready) {
+              // This is a re-join or update
+              toast.success("Heads up!", {
+                description: `${currentPresence.metas[0].user_name} is ready`,
+                position: "bottom-right"
+              });
+             
+            } else {
+              // This is a true join
+              toast.success(`Heads up!`, {
+                description: `${newPresence.metas[0].user_name} joined the quiz!`,
                 position: "bottom-right"
                 
             });
-            
-        });
+            }
+          });
+
+        this.socketStore.channel.on("player_created", (payload) => {
+            console.log('Player created:', payload);
+            this.addedPlayers.push(payload.player);
+          
+          });
+
+     
      
     },
    
   methods: {
+   async startQuiz() {
+    if (this.canStartQuiz) {
+      try {
+        this.socketStore.channel.push('quiz_start', { quiz_id: this.activeQuiz.id })
+          .receive('ok', (response) => {
+            console.log('Quiz started successfully:', response);
+            this.$router.push(`/quiz/${this.activeQuiz.join_code}/current_question`);
+
+            // Optionally, redirect to the quiz view or show a success message
+          })
+          .receive('error', (error) => {
+            console.error('Error starting quiz:', error);
+            toast.error("Error starting quiz: " + error.message, {
+              position: "bottom-right"
+            });
+          });
+      } catch (error) {
+        console.error('Error pushing start_quiz:', error);
+        toast.error("Error starting quiz: " + error.message, {
+          position: "bottom-right"
+        });
+      }
+    } else {
+      toast.error("Cannot start quiz. Ensure all players are ready.", {
+        position: "bottom-right"
+      });
+    }},
    async fetchPlayers() {
   try {
     const resp = await this.socketStore.push('get_players', { quiz_id: this.activeQuiz.id });
@@ -191,6 +244,8 @@ export default {
   }
 
 },
+
+
   isPlayerReady(addedPlayer) {
     // Find a matching active user by a unique property (e.g., session_id or user_id)
     const match = this.activeUsers.find(user => {
@@ -202,7 +257,16 @@ export default {
     return match ? match.ready : false;
   },
 
-
+  async deletePlayer(playerId) {
+    try {
+    let res = await this.socketStore.push('delete_player', { player_id: playerId });
+      console.log('Response from delete_player:', res);
+      this.addedPlayers = this.addedPlayers.filter(player => player.id !== playerId);
+      this.activeUsers = this.activeUsers.filter(user => user.id !== playerId);
+    } catch (error) {
+      console.error('Error deleting player:', error);
+    }
+  },
 
    async getQuiz() {
      let res = await this.quizStore.fetchQuiz(this.$route.params.join_code);
@@ -234,6 +298,14 @@ export default {
   computed: {
   activeQuiz() {
     return this.quizStore.activeQuiz
+  },
+  countReadyUsers() {
+    return this.activeUsers.filter(user => user.ready).length;
+  },
+  canStartQuiz() {
+    // Check if there are any players and if all are ready
+    return this.addedPlayers.length > 0 && this.countReadyUsers === this.addedPlayers.length;
+
   },
   
   

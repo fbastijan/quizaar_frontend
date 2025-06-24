@@ -9,6 +9,8 @@ import NewQuiz from './views/quiz/NewQuiz.vue'
 import ActiveQuiz from './views/quiz/ActiveQuiz.vue'
 import JoinQuiz from './views/quiz/JoinQuiz.vue'
 import Lobby from './views/quiz/QuizLobby.vue'
+import QuestionView from './views/quiz/PlayerQuestionView.vue'
+import OrgQuestionView from './views/quiz/OrgQuestionView.vue'
 const routes = [
   { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
@@ -19,8 +21,9 @@ const routes = [
       {path: '/quiz/active/:join_code', component: ActiveQuiz }, // Redirect any unmatched routes to home
       {path: '/quiz/join' ,component: JoinQuiz },
       {path: "/quiz/lobby/:join_code", component: Lobby }, // Redirect any unmatched routes to home
+      {path: "/quiz/:join_code/current_question", component: QuestionView },
+      {path: "/quiz/:join_code/org/current_question", component: OrgQuestionView }
       
-
 ]
 
 const router = createRouter({
@@ -36,6 +39,7 @@ router.beforeEach((to, from, next) => {
     /^\/register$/,
     /^\/quiz\/join$/,
     /^\/quiz\/lobby(\/[^/]+)?$/, // matches /quiz/lobby and /quiz/lobby/:join_code
+    /^\/quiz\/[^/]+\/current_question$/
   
   ];
 
