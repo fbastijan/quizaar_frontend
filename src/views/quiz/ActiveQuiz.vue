@@ -205,7 +205,7 @@ export default {
         this.socketStore.channel.push('quiz_start', { quiz_id: this.activeQuiz.id })
           .receive('ok', (response) => {
             console.log('Quiz started successfully:', response);
-            this.$router.push(`/quiz/${this.activeQuiz.join_code}/current_question`);
+            this.$router.push(`/quiz/${this.activeQuiz.join_code}/org/current_question`);
 
             // Optionally, redirect to the quiz view or show a success message
           })
@@ -283,7 +283,7 @@ export default {
         console.error('Error deleting question:', error);
       });
     },
-  updateQuestion(question, ) {
+  updateQuestion(question ) {
     this.quizStore.updateQuestion(question)
       .then(() => {
         console.log(`Question with ID ${question.id} updated`);

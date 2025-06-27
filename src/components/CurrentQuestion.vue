@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-rows-3  h-screen gap-4 p-4">
+    <div class="grid grid-rows-3   gap-4 p-4">
    
         
         <div class ="flex flex-col gap-4 text-center items-center justify-center  row-span-2 bg-gray-100 p-4 ">
@@ -22,7 +22,8 @@
           :class="[
             colorClasses[idx % colorClasses.length],
             'hover:scale-105 transition-transform duration-200',
-            'p-4 rounded-xl shadow-lg flex items-center justify-center h-full w-full cursor-pointer text-lg font-semibold'
+            'p-4 rounded-xl shadow-lg flex items-center justify-center h-full w-full cursor-pointer text-lg font-semibold',
+             isClosed ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
           ]"
         >
           {{ option }}
@@ -75,8 +76,9 @@ import { Button } from '@/components/ui/button';
   name: 'QuestionView',
   data() {
     return {
-        localTimeLeft: 0, // <-- Add this line
+        localTimeLeft: 0,
         userAnswer: '',
+        timer: null, // <-- Add this line to ensure timer is tracked
       colorClasses: [
         'bg-green-200 hover:bg-green-300 active:bg-green-400 focus:ring-2 focus:ring-green-400',
         'bg-blue-200 hover:bg-blue-300 active:bg-blue-400 focus:ring-2 focus:ring-blue-400',
@@ -93,9 +95,19 @@ import { Button } from '@/components/ui/button';
       handler(newVal) {
         this.localTimeLeft = newVal;
         this.startTimer();
+      },
+    },
+       question: {
+      deep: true,
+      handler() {
+        // Always reset timer when question changes
+        this.localTimeLeft = this.time_left;
+        this.startTimer();
       }
     }
+  
   },
+
   methods: {
  answerQuestion(answer) {
         
@@ -130,6 +142,9 @@ import { Button } from '@/components/ui/button';
         alert('Incorrect, try again!');
       }
     },
+  },
+  beforeUnmount() {
+    this.clearTimer();
   },
  }
 

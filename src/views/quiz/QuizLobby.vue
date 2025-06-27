@@ -21,7 +21,7 @@
 import { useSocketStore } from '@/stores/socket';
 
 import {Button} from '@/components/ui/button';
-
+import { useQuestionStore } from '@/stores/question';
 import {
   Card,
   CardAction,
@@ -46,11 +46,12 @@ export default {
   },
   setup() {
     const socketStore = useSocketStore();
-    return { socketStore };
+    const questionStore = useQuestionStore();
+    return { socketStore, questionStore };
   },
   data() {
     return {
-      channel: null,
+      
       sessionId: localStorage.getItem('session_id'),
       username: localStorage.getItem('name'),
       token: localStorage.getItem('token'),
@@ -62,7 +63,13 @@ export default {
   methods: {
     
   },
+  computed:{
+    currentQuestion() {
+      return this.questionStore.currentQuestion;
+    },
+  },
  async mounted() {
+
      try {
 
      
@@ -72,9 +79,9 @@ export default {
         } catch (e) {
             console.log(e);
         }
-        this.channel= this.socketStore.channel;
+       const channel= this.socketStore.channel;
 
-        this.channel.on('guest_joined', (data) => {
+      channel.on('guest_joined', (data) => {
               console.log('Guest joined:', data);
               // Store session_id and name in sessionStorage
              
@@ -82,7 +89,14 @@ export default {
              localStorage.setItem('name', data.name);
            
         });
+      try{
+        await this.questionStore.QuestionServed(channel, () => {
+  this.$router.push(`/quiz/${this.$route.params.join_code}/current_question`);
+});
 
+      }catch(e) {
+        console.error("Error joining channel:", e);
+      }
       
   },
   methods: {
