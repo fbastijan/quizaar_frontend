@@ -96,7 +96,7 @@ export default {
         showDialog.value = true
       }
       function openUpdateDialog(question) {
-      selectedQuestion.value = { ...question } // clone to avoid mutating original
+      selectedQuestion.value = { ...question } 
       
       showDialog.value = true
     }
@@ -106,10 +106,10 @@ export default {
     }
       async function saveQuestion(question) {
             if (!question.id) {
-              // Add new question
+             
               await quizStore.createQuestion(question)
             } else {
-              // Update existing question
+              
               await quizStore.updateQuestion(question)
             }
             closeDialog()
@@ -158,8 +158,7 @@ export default {
         }
 
 
-        // Initialize presence tracking
-      
+        
 
         
         this.socketStore.presence.onSync(() => {
@@ -172,14 +171,14 @@ export default {
 
         this.socketStore.presence.onJoin((id, currentPresence, newPresence) => {
             if (currentPresence && Object.keys(currentPresence).length > 0 && newPresence.metas[0].ready) {
-              // This is a re-join or update
+              
               toast.success("Heads up!", {
                 description: `${currentPresence.metas[0].user_name} is ready`,
                 position: "bottom-right"
               });
              
             } else {
-              // This is a true join
+           
               toast.success(`Heads up!`, {
                 description: `${newPresence.metas[0].user_name} joined the quiz!`,
                 position: "bottom-right"
@@ -207,7 +206,7 @@ export default {
             console.log('Quiz started successfully:', response);
             this.$router.push(`/quiz/${this.activeQuiz.join_code}/org/current_question`);
 
-            // Optionally, redirect to the quiz view or show a success message
+         
           })
           .receive('error', (error) => {
             console.error('Error starting quiz:', error);
@@ -229,7 +228,7 @@ export default {
    async fetchPlayers() {
   try {
     const resp = await this.socketStore.push('get_players', { quiz_id: this.activeQuiz.id });
-    // If resp is an array, get the last element
+    
     let players = resp;
       console.log('Response from get_players:', resp);
     if (Array.isArray(resp)) {
@@ -247,13 +246,13 @@ export default {
 
 
   isPlayerReady(addedPlayer) {
-    // Find a matching active user by a unique property (e.g., session_id or user_id)
+    
     const match = this.activeUsers.find(user => {
-      // Compare by session_id or user_id as appropriate
+     
       return user.id === addedPlayer.session_id || user.id === addedPlayer.user_id
       
     });
-    // If found, check if any of their metas are ready
+    
     return match ? match.ready : false;
   },
 
@@ -277,7 +276,7 @@ export default {
     this.quizStore.deleteQuestion(questionId)
       .then(() => {
         console.log(`Question with ID ${questionId} deleted`);
-        this.getQuiz(); // Refresh the quiz after deletion
+        this.getQuiz(); 
       })
       .catch((error) => {
         console.error('Error deleting question:', error);
@@ -287,7 +286,7 @@ export default {
     this.quizStore.updateQuestion(question)
       .then(() => {
         console.log(`Question with ID ${question.id} updated`);
-        this.getQuiz(); // Refresh the quiz after update
+        this.getQuiz();
       })
       .catch((error) => {
         console.error('Error updating question:', error);
@@ -303,7 +302,7 @@ export default {
     return this.activeUsers.filter(user => user.ready).length;
   },
   canStartQuiz() {
-    // Check if there are any players and if all are ready
+    
     return this.addedPlayers.length > 0 && this.countReadyUsers === this.addedPlayers.length;
 
   },

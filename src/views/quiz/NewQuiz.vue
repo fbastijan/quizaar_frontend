@@ -113,15 +113,15 @@ export default {
     step: 1,
     title: 'General',
     description: 'Basic information about your quiz',
-    state: 'active', // Set the initial state for the first step
+    state: 'active', 
   },
   {
     step: 2,
     title: 'Parameters',
     description: 'Set parameters for your quiz',
-    state: 'inactive', // Set the initial state for the second step
+    state: 'inactive', 
   },
-  // <-- Add this
+
  
 ],
     currentStep: 1, 
@@ -139,30 +139,29 @@ export default {
     async handleStart(parameters) {
       let response;
         try {
-          // Assuming you have a method to create a quiz
+        
            response = await this.quizStore.createQuiz( {quiz: {...this.GeneralQuizForm}}, parameters);
 
          
-                   // Redirect to the quiz list or another page
-           // Handle the response as needed
+             
           console.log('Quiz created successfully:', response);
-           // Redirect to the quiz list or another page
+          
         } catch (error) {
           console.error('Error creating quiz:', error);
-          // Handle error (e.g., show a toast notification)
+          
         }
 
         
     },
       handleNext(formData) {
-    // formData contains { title, description }
+    
     console.log('Received from child:', formData)
     this.GeneralQuizForm.title = formData.title;
     this.GeneralQuizForm.description = formData.description;
-    this.changeStep(this.currentStep+1); // Move to the next step
+    this.changeStep(this.currentStep+1); 
 
 
-    // Do something with the data (e.g., save to store, go to next step)
+  
   },
   handlePrevious() {
       if (this.currentStep > 1) {
@@ -176,7 +175,7 @@ export default {
       this.updateStepStates();
     },
 
-    // Method to update the state of each step based on the current step
+  
     updateStepStates() {
       this.steps.forEach((step, index) => {
         if (index < this.currentStep - 1) {

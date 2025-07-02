@@ -28,6 +28,8 @@ import { useSocketStore } from '@/stores/socket';
 import { useQuestionStore } from '@/stores/question';
 import UserAnswers from '@/components/UserAnswers.vue';
 import StatsTable from '@/components/StatsTable.vue';
+import { useScoreStore } from '@/stores/score';
+import { useQuizStore } from '@/stores/quiz';
 import { Button } from '@/components/ui/button';
 import { ref } from 'vue';
 import {
@@ -51,47 +53,31 @@ export default {
     
   },
   setup() {
-    // Import and use the socket store
+   
     const socketStore = useSocketStore();
     const questionStore = useQuestionStore();
+    const scoreStore = useScoreStore();
+    const quizStore = useQuizStore();
+    
     return {
       socketStore,
-      questionStore
+      questionStore,
+      scoreStore
+      , quizStore
     };
   },
   data() {
     return {
      
-      isClosed: true, // Track if the question is closed
-      answers: ref([]), // Store answers fetched from the server
-      results: ref([]), // Store results fetched from the server
-      mockAnswers: [
-  { id: "1", is_correct: false, player: { id: "p1", name: "Alice" }, text: "42" },
-  { id: "2", is_correct: true, player: { id: "p2", name: "Bob" }, text: "Paris" },
-  { id: "3", is_correct: false, player: { id: "p3", name: "Charlie" }, text: "Blue" },
-  { id: "4", is_correct: true, player: { id: "p4", name: "Diana" }, text: "Mount Everest" },
-  { id: "5", is_correct: false, player: { id: "p5", name: "Eve" }, text: "Mercury" },
-  { id: "6", is_correct: true, player: { id: "p6", name: "Frank" }, text: "Tesla" },
-  { id: "7", is_correct: false, player: { id: "p7", name: "Grace" }, text: "Python" },
-  { id: "8", is_correct: false, player: { id: "p8", name: "Heidi" }, text: "Pizza" },
-  { id: "9", is_correct: true, player: { id: "p9", name: "Ivan" }, text: "Tokyo" },
-  { id: "10", is_correct: false, player: { id: "p10", name: "Judy" }, text: "Einstein" },
-    { id: "1", is_correct: false, player: { id: "p1", name: "Alice" }, text: "42" },
-  { id: "2", is_correct: true, player: { id: "p2", name: "Bob" }, text: "Paris" },
-  { id: "3", is_correct: false, player: { id: "p3", name: "Charlie" }, text: "Blue" },
-  { id: "4", is_correct: true, player: { id: "p4", name: "Diana" }, text: "Mount Everest" },
-  { id: "5", is_correct: false, player: { id: "p5", name: "Eve" }, text: "Mercury" },
-  { id: "6", is_correct: true, player: { id: "p6", name: "Frank" }, text: "Tesla" },
-  { id: "7", is_correct: false, player: { id: "p7", name: "Grace" }, text: "Python" },
-  { id: "8", is_correct: false, player: { id: "p8", name: "Heidi" }, text: "Pizza" },
-  { id: "9", is_correct: true, player: { id: "p9", name: "Ivan" }, text: "Tokyo" },
-  { id: "10", is_correct: false, player: { id: "p10", name: "Judy" }, text: "Einstein" }
-]
+      isClosed: true, 
+      answers: ref([]), 
+      results: ref([]), 
+
     };
   },
   methods: {
     handleAnswer(answer) {
-      // Emit the answer to the parent component
+     
       console.log("Answer submitted:", answer);
     },
     async trackAnswers(channel) {
@@ -106,26 +92,14 @@ export default {
     }
      
     },
-    async trackResults(channel) {
-      try {
-        channel.push('player_stats', { })
-          .receive('ok', (response) => {
-            this.results = response.players;
-            console.log('Player stats received:', this.results);
-          })
-          .receive('error', (error) => {
-            console.error('Error receiving player stats:', error);
-          });
-      } catch (error) {
-        console.error("Error getting player stats:", error);
-      }
-    },
+    
+    
     async nextQuestion(channel) {
       try {
         await this.questionStore.ServeQuestion(channel);
        
          this.trackAnswers(channel);
-          this.trackResults(channel);
+          this.scoreStore.trackResults(channel);
       } catch (error) {
         console.error("Error serving next question:", error);
       }
@@ -144,10 +118,14 @@ export default {
     },
     socketChannel() {
       return this.socketStore.channel;
-    }
+    },
+    results() {
+      return this.scoreStore.PlayerScores;
+    },
   },
   async mounted() {
-    // Fetch the current question when the component is mounted
+
+   
         if (!this.socketStore.channel) {
       const joinCode = this.$route.params.join_code;
       if (!joinCode) {
@@ -172,8 +150,13 @@ export default {
       this.trackResults(channel);
 
     });
-   this.trackResults(channel);
-
+   await this.scoreStore.trackResults(channel);
+     this.quizStore.quizEnd(channel, (response) => {
+       const join_code = this.$route.params.join_code;
+        this.$router.push('/quiz/'+ join_code +'/results');
+        toast.success("Quiz has ended!");
+      
+    });
    
 
   

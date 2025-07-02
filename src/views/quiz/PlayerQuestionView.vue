@@ -1,5 +1,8 @@
 <template>
+
    <div>
+    
+    <Score :oldScore="pastScore" :newScore="currentPlayerScore" :duration="400"  :higher="higher" :lower="lower" :placement="placement"/>
       <CurrentQuestion
         v-if="currentQuestion"
         :question="currentQuestion"
@@ -20,21 +23,29 @@ import { useSocketStore } from '@/stores/socket';
 import SkeletonCurrentQuestion from '@/components/SkeletonCurrentQuestion.vue';
 import {toast } from 'vue-sonner';
 import { useQuestionStore } from '@/stores/question';
+import { useScoreStore } from '@/stores/score';
+import { useQuizStore } from '@/stores/quiz';
+import Score from '@/components/Score.vue';
 
  export default {
   setup(){
     
     const socketStore = useSocketStore();
     const questionStore = useQuestionStore();
-
+    const scoreStore = useScoreStore();
+    const quizStore = useQuizStore();
     return {
       socketStore, 
-      questionStore
+      questionStore,
+      scoreStore,
+      quizStore
     };
   },
    components: {
      CurrentQuestion,
-     SkeletonCurrentQuestion
+     SkeletonCurrentQuestion,
+     Score
+
    },
 
 
@@ -45,7 +56,8 @@ import { useQuestionStore } from '@/stores/question';
        sessionId: localStorage.getItem('session_id'),
         username: localStorage.getItem('name'),
        
-      isClosed: false, // Track if the question is closed
+      isClosed: false, 
+      pastScore: 0,
     
      };
    },
@@ -72,6 +84,7 @@ import { useQuestionStore } from '@/stores/question';
           console.error("Error submitting answer:", e);
         }
       },
+    
    },
 
     computed: {
@@ -80,13 +93,25 @@ import { useQuestionStore } from '@/stores/question';
       },
       timeLeft() {
         return this.questionStore.timeLeft;
+      },
+      currentPlayerScore() {
+        return this.scoreStore.currentPlayerScore || 0; 
+      },
+      higher() {
+        return this.scoreStore.higherPlayerScore || { score: null, name: null }; // Default value if not provided
+      },
+      lower() {
+        return this.scoreStore.lowerPlayerScore || { score: null, name: null }; // Default value if not provided
+      },
+      placement() {
+        return this.scoreStore.placement || 0; // Default value if not provided
       }
     },
  async mounted() {
 
+  
 
 
-  // Check if the socketStore channel is already initializ
  if (!this.socketStore.channel) {
       const joinCode = this.$route.params.join_code;
       if (!joinCode) {
@@ -95,8 +120,8 @@ import { useQuestionStore } from '@/stores/question';
       }
       await this.socketStore.joinChannel(`quiz:${joinCode}`, { token: localStorage.getItem('token') , session_id: this.sessionId, name: this.username });
     }
-
-  // Fetch the current question when the component is mounted
+  
+ 
   try {
     if (!this.socketStore.channel) {
       console.error("Channel not initialized on socketStore");
@@ -107,7 +132,8 @@ import { useQuestionStore } from '@/stores/question';
     console.error("Error fetching current question:", e);
   }
   const channel = this.socketStore.channel;
-
+await this.scoreStore.getScore(channel);
+  this.pastScore = this.scoreStore.currentPlayerScore ?? 0;
    try { 
     await this.questionStore.ActiveQuestion(channel)
   console.log("Current question fetched successfully:")}
@@ -117,19 +143,33 @@ import { useQuestionStore } from '@/stores/question';
     }
   try{
     await this.questionStore.QuestionServed(channel, () => {
+
     this.isClosed = false; // Reset isClosed when a new question is served
     });
   }catch(e) {
     console.error("Error fetching current question:", e);
   }
+
+  this.quizStore.quizEnd(channel, (response) => {
+       const join_code = this.$route.params.join_code;
+        this.$router.push('/quiz/'+ join_code +'/results');
+        toast.success("Quiz has ended!");
+      
+    });
+
+    // Listen for question closed event
+
   channel.on('question_closed', (data) => {
       this.isClosed = true; // Set isClosed to true when the question is closed
       console.log('Question closed:', data);
     });
 
     channel.on('answer_received', (data) => {
-      console.log('Answer received:', data);
-      this.questionStore.trackAnswers(channel); // Update answers when a new answer is received
+      
+    
+       this.pastScore = this.scoreStore.currentPlayerScore ?? 0; // Save the old score
+      this.scoreStore.getScore(channel); // This will update currentPlayerScore
+
     });
 
   

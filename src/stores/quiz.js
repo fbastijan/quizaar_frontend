@@ -99,10 +99,15 @@ export const useQuizStore = defineStore('quiz', {
             } catch (error) {
                 console.error("Failed to update question:", error);
             }
-}
+            
+},   
+    async quizEnd(channel, callback) {
+        channel.on('quiz_ended', (response) => {
+           callback(response);
+           
+        });
+    }
 
-    },
-
-    });
+    }});
 
 
