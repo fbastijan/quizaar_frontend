@@ -1,5 +1,16 @@
 <template>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:mx-50">
+  <div class="mb-6 flex flex-col md:flex-col items-center justify-between gap-4 px-3">
+    <div class="text-2xl font-bold">
+      {{ activeQuiz?.title || 'Quiz' }}
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="font-mono text-lg px-3 py-1 rounded">Code: {{ $route.params.join_code }}</span>
+      <Button size="icon" variant="ghost" @click="copyJoinCode" title="Copy join code">
+        <Copy class="size-4" />
+      </Button>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:mx-50">
     
     <QuizQuestions v-if="activeQuiz && activeQuiz.questions && activeQuiz.questions.data" class="lg:col-span-2" :questions=" this.activeQuiz.questions.data" @delete-question="deleteQuestion" @update-question="openUpdateDialog" @add-question="openAddDialog"/>
   
@@ -57,7 +68,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { toast } from 'vue-sonner'
 import { useSocketStore } from '@/stores/socket';
 import { Trash2 } from 'lucide-vue-next';
-
+import { Copy } from 'lucide-vue-next';
 
 
 
@@ -83,7 +94,8 @@ export default {
         Label,
        UpdateQuestionDialog,
        Trash2,
-        QuizQuestions
+        QuizQuestions,
+        Copy
     },  
     setup() {
     const quizStore = useQuizStore();
@@ -291,6 +303,14 @@ export default {
       .catch((error) => {
         console.error('Error updating question:', error);
       });
+  },
+  copyJoinCode() {
+    const code = this.$route.params.join_code;
+    navigator.clipboard.writeText(code);
+    toast.success("Join code copied to clipboard!", {
+      position: "top-center",
+      duration: 1000
+    });
   }
    
 },

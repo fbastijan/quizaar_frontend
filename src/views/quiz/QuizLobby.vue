@@ -31,6 +31,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { toast } from 'vue-sonner';
 export default {
   name: 'QuizLobby',
   components: {
@@ -77,7 +78,10 @@ export default {
           
             console.log("Joined quiz channel:", res);
         } catch (e) {
-            console.log(e);
+          toast.error("Failed to join quiz channel. Please check your join code and try again.");
+          this.socketStore.disconnect();
+          this.$router.push({ name: 'QuizView' });
+          return;
         }
        const channel= this.socketStore.channel;
 
