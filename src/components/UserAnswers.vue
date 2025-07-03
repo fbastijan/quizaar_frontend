@@ -17,10 +17,13 @@
             <span class="mx-2 text-muted-foreground">answered</span>
             <span class="text-foreground">{{ answer.text }}</span>
           </div>
+
+           <Button variant="ghost" class="ms-auto" @click="fixAnswer(answer)"> <Pen></Pen></Button>
           <span
             :class="answer.is_correct ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
             class="px-2 py-1 rounded text-xs font-semibold"
           >
+           
             {{ answer.is_correct ? 'Correct' : 'Incorrect' }}
           </span>
         </li>
@@ -31,12 +34,28 @@
 </template>
 
 <script>
+import { Pen } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
 export default {
+
   name: 'UserAnswers',
   props: {
     answers: {
       type: Array,
       required: true
+    }
+  },
+
+  components: {
+    Pen,
+    Button
+
+  },
+  methods: {
+    fixAnswer(answer) {
+
+      this.$emit('answer', answer);
+      
     }
   }
 };

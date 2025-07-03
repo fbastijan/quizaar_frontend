@@ -12,7 +12,7 @@
           <TabsTrigger value="stats">Stats</TabsTrigger>
         </TabsList>
         <TabsContent value="answers">
-          <UserAnswers :answers="answers" v-if="answers"/>
+          <UserAnswers :answers="answers" v-if="answers" @answer="fixAnswer"/>
         </TabsContent>
         <TabsContent value="stats">
           <StatsTable :results="results" v-if="results && results.length"/>
@@ -71,7 +71,7 @@ export default {
      
       isClosed: true, 
       answers: ref([]), 
-      results: ref([]), 
+    
 
     };
   },
@@ -92,7 +92,21 @@ export default {
     }
      
     },
-    
+    async fixAnswer(answer){
+      try {
+        await this.socketStore.channel.push('fix_answer', { answer })
+          .receive('ok',async (response) => {
+            const i = this.answers.findIndex(a => a.id === answer.id);
+            this.answers[i].is_correct = response.answer.data.is_correct;
+            await this.scoreStore.trackResults(this.socketStore.channel);
+          })
+          .receive('error', (error) => {
+            console.error("Error fixing answer:", error);
+          });
+      } catch (e) {
+        console.error("Error fixing answer:", e);
+      }
+    },
     
     async nextQuestion(channel) {
       try {
@@ -146,9 +160,13 @@ export default {
     this.trackAnswers(channel);
 
     channel.on('answer_received', (data) => {
-     this.trackAnswers(channel);
-      this.trackResults(channel);
+      if (!data.fixed) {
 
+           this.trackAnswers(channel);
+      this.scoreStore.trackResults(channel);
+
+      }
+  
     });
    await this.scoreStore.trackResults(channel);
      this.quizStore.quizEnd(channel, (response) => {

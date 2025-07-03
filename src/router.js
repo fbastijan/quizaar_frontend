@@ -12,21 +12,21 @@ import Lobby from './views/quiz/QuizLobby.vue'
 import QuestionView from './views/quiz/PlayerQuestionView.vue'
 import OrgQuestionView from './views/quiz/OrgQuestionView.vue'
 import FinalResultView from './views/quiz/FinalResultView.vue'
-
+import UserQuizListView from './views/quiz/UserQuizListView.vue'
 const routes = [
   { path: '/', component: HomeView },
     { path: '/about', component: AboutView },
-    { path: '/quiz', component: QuizView, name: 'QuizView' }, // Redirect any unmatched routes to home
-    {path: '/register', component: RegisterView }, // Redirect any unmatched routes to home
+    { path: '/quiz', component: QuizView, name: 'QuizView' },
+    {path: '/register', component: RegisterView }, 
      {path: '/login', component: LoginView },
-     {path: '/quiz/new', component: NewQuiz, name: "NewQuiz" }, // Redirect any unmatched routes to home
-      {path: '/quiz/active/:join_code', component: ActiveQuiz }, // Redirect any unmatched routes to home
+     {path: '/quiz/new', component: NewQuiz, name: "NewQuiz" }, 
+      {path: '/quiz/active/:join_code', component: ActiveQuiz }, 
       {path: '/quiz/join' ,component: JoinQuiz },
-      {path: "/quiz/lobby/:join_code", component: Lobby,  name: "Lobby"}, // Redirect any unmatched routes to home
+      {path: "/quiz/lobby/:join_code", component: Lobby,  name: "Lobby"}, 
       {path: "/quiz/:join_code/current_question", component: QuestionView },
       {path: "/quiz/:join_code/org/current_question", component: OrgQuestionView },
-      {path: "/quiz/:join_code/results", component: FinalResultView }, // Redirect any unmatched routes to home
- 
+      {path: "/quiz/:join_code/results", component: FinalResultView },
+      {path: "/quiz/list/user", component: UserQuizListView } 
 ]
 
 const router = createRouter({
@@ -41,7 +41,7 @@ router.beforeEach((to, from, next) => {
     /^\/login$/,
     /^\/register$/,
     /^\/quiz\/join$/,
-    /^\/quiz\/lobby(\/[^/]+)?$/, // matches /quiz/lobby and /quiz/lobby/:join_code
+    /^\/quiz\/lobby(\/[^/]+)?$/, 
     /^\/quiz\/[^/]+\/current_question$/,
     /^\/quiz\/[^/]+\/results$/,
     /^\/quiz$/

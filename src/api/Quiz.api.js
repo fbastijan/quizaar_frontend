@@ -73,6 +73,18 @@ async getQuestions(quiz_id) {
       throw error;
     }
   },
+
+  async getQizzessbyUser() {
+    try {
+      let response = await Service.get('/quizzes/list/user', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching quizzes by user:", error);
+      throw error;
+    }
+},
   async createQuestion(questionData) {
     try {
       let response = await Service.post('/questions/create', {question: {...questionData}}, {
@@ -83,6 +95,8 @@ async getQuestions(quiz_id) {
       console.error("Error creating question:", error);
       throw error;
     }
-  }
+
+  },
+  
 }
 export default quizApi;
