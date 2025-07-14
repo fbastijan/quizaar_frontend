@@ -15,6 +15,7 @@
                 :title="quiz.title"
               >
                 {{ quiz.title }}
+              <p class="text-sm text-gray-500">{{dateAndTime(quiz.inserted_at) }}</p>
               </CardTitle>
             </CardHeader>
             <CardContent class="flex flex-col flex-1">
@@ -24,13 +25,20 @@
                 :title="quiz.description"
               >
                 {{ quiz.description }}
+              
+
+             
+              </p>
+
+              <p class="text-sm  mb-2">
+                  {{ quiz.current_question_id ? ' On going' : 'Not started' }}
               </p>
               <div class="text-sm text-gray-400 mb-4 break-words" style="word-break: break-word;">
                 Join code: {{ quiz.join_code }}
               </div>
-              <router-link :to="`/quiz/${quiz.join_code}`" class="text-blue-600 hover:underline text-lg mt-auto break-words">
+              <Button @click="redirectToOrgView(quiz)"  variant="outline"class="  text-lg mt-auto break-words">
                 View Quiz
-              </router-link>
+              </Button>
             </CardContent>
           </Card>
         </div>
@@ -62,7 +70,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+
 
 export default {
   name: 'UserQuizListView',
@@ -84,12 +94,38 @@ export default {
     CardHeader,
     CardTitle,
     CardContent,
+    Button
+  },
+
+  computed:{
+    dateAndTime() {
+      // Returns a function to parse ISO date strings like "2025-07-03T18:12:23Z"
+      return (quiz_date) => {
+        if (!quiz_date) return '';
+        const date = new Date(quiz_date);
+        return date.toLocaleString('en-US', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
+      };
+    }
   },
   methods: {
     paginatedQuizzes(page) {
       const start = (page - 1) * this.itemsPerPage;
       const end = start + this.itemsPerPage;
       return this.quizzes.slice(start, end);
+    },
+    redirectToOrgView(quiz) {
+     if (quiz.current_question_id ) {
+        this.$router.push({ name: 'OrgQuestionView', params: { join_code: quiz.join_code } });
+      } else {
+        this.$router.push({ name: 'ActiveQuiz', params: { join_code: quiz.join_code } });
+      }
     },
   },
   async created() {

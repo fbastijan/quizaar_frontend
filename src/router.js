@@ -20,13 +20,14 @@ const routes = [
     {path: '/register', component: RegisterView }, 
      {path: '/login', component: LoginView },
      {path: '/quiz/new', component: NewQuiz, name: "NewQuiz" }, 
-      {path: '/quiz/active/:join_code', component: ActiveQuiz }, 
+      {path: '/quiz/active/:join_code', component: ActiveQuiz , name: "ActiveQuiz" }, 
       {path: '/quiz/join' ,component: JoinQuiz },
       {path: "/quiz/lobby/:join_code", component: Lobby,  name: "Lobby"}, 
       {path: "/quiz/:join_code/current_question", component: QuestionView },
-      {path: "/quiz/:join_code/org/current_question", component: OrgQuestionView },
+      {path: "/quiz/:join_code/org/current_question", component: OrgQuestionView , name: "OrgQuestionView" },
       {path: "/quiz/:join_code/results", component: FinalResultView },
-      {path: "/quiz/list/user", component: UserQuizListView } 
+      {path: "/quiz/list/user", component: UserQuizListView } ,
+      {path: "/account/settings", component: ProfileSettingsView, name: "ProfileSettingsView" }
 ]
 
 const router = createRouter({
@@ -35,6 +36,7 @@ const router = createRouter({
 })
 
 import { toast } from 'vue-sonner'
+import ProfileSettingsView from './views/ProfileSettingsView.vue'
 
 router.beforeEach((to, from, next) => {
   const javneStranice = [

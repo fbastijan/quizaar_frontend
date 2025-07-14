@@ -4,12 +4,13 @@ import auth from '@/api/account.api';
 
 
 
+
+
 export const useAccountStore = defineStore('account', {
   state: () => {
     return { accountData: null, }
   },
-  // could also be defined as
-  // state: () => ({ count: 0 })
+ 
   actions: {
     async registerAccount(full_name, email, password) {
       let userDetail = {
@@ -19,7 +20,7 @@ export const useAccountStore = defineStore('account', {
       };
       try {
         let user = await auth.register(userDetail);
-        this.accountData = this.accountData =  {email: user.email,
+        this.accountData =  {email: user.email,
         id: user.id,
         token: user.token,
       };
@@ -30,10 +31,34 @@ export const useAccountStore = defineStore('account', {
         throw error; // Re-throw the error for further handling if needed
       }
     },
+    async updateAccountProfile(profileData, password) {
+      try {
+        profileData = {
+          ...profileData,
+         id: this.accountData.id
+        }
+
+        let user = await auth.updateProfile(profileData, password); 
+
+        
+          this.accountData = {
+          email: user.email,
+          id: user.id,
+          token: localStorage.getItem("token"),
+          }
+        return user;
+      } catch (error) {
+        console.error("Profile update failed:", error);
+        throw error; 
+      }
+    },
     async loginAccount(email, password) {
       try {
         let user = await auth.login(email, password);
-        this.accountData =  {email: user.email,
+
+        this.accountData =  {
+  
+          email: user.email,
         id: user.id,
         token: user.token,
       };

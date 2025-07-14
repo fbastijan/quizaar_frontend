@@ -1,27 +1,37 @@
-<template><Card class="w-full">
+<template>
+  <Card class="w-full mx-auto">
     <CardHeader>
       <CardTitle>Create Your Ai Quiz</CardTitle>
       <CardDescription>Hmmm.... What should we call this Quiz?</CardDescription>
     </CardHeader>
     <CardContent>
-      <form  @submit.prevent="sendForm()">
-        <div class="grid items-center w-full gap-4">
-          <div class="flex flex-col space-y-1.5">
-            <Label for="title">Title</Label>
-            <Input id="title" placeholder="Title to your quiz" required v-model="title" />
-            <Label for="title" class="mt-3" >Description</Label>
-            <Textarea id="description" placeholder="Description of your quiz" class="h-24 resize-none" v-model="description" />
-          </div>
-        
+      <form @submit.prevent="sendForm()">
+        <div class="flex flex-col space-y-4 w-full">
+          <Label for="title">Title</Label>
+          <Input
+            id="title"
+            placeholder="Title to your quiz"
+            required
+            v-model="title"
+            class="w-full"
+          />
+          <Label for="description" class="mt-3">Description</Label>
+          <Textarea
+            id="description"
+            wrap="soft"
+            placeholder="Description of your quiz"
+            class="h-24 resize-none break-words w-full"
+            v-model="description"
+          />
         </div>
-     </form>
+      </form>
     </CardContent>
     <CardFooter class="flex justify-between px-6 pb-6">
       <div></div>
-      <Button type="submit" @click="sendForm" >Next</Button>
+      <Button type="submit" @click="sendForm">Next</Button>
     </CardFooter>
-     
-  </Card></template>
+  </Card>
+</template>
 
   <script>
 import {

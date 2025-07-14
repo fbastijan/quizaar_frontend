@@ -79,6 +79,8 @@ async getQuestions(quiz_id) {
       let response = await Service.get('/quizzes/list/user', {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      console.log("Quizzes by user:", response.data);
       return response.data;
     } catch (error) {
       console.error("Error fetching quizzes by user:", error);
@@ -90,6 +92,7 @@ async getQuestions(quiz_id) {
       let response = await Service.post('/questions/create', {question: {...questionData}}, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
       return response;
     } catch (error) {
       console.error("Error creating question:", error);

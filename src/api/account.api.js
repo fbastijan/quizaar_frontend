@@ -44,6 +44,16 @@ const auth ={
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
+  },
+  async updateProfile(profileData, password) {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("User not authenticated");
+    }
+    let response = await Service.patch("/accounts/update", {account: profileData, current_hash: password}, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
   }
 
 }

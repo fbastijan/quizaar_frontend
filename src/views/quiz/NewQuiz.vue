@@ -1,56 +1,49 @@
 <template>  
-
-    <div class="flex justify-center  min-h-screen mt-10">
-          <div class="flex flex-col items-center">
-    <Stepper class="flex w-xl items-start gap-2 mb-3">
-    <StepperItem
-      v-for="step in steps"
-      :key="step.step"
-      class="relative flex w-full flex-col items-center justify-center"
-      :step="step.step"
-   
-    >
-      <StepperSeparator
-        v-if="step.step !== steps[steps.length - 1].step"
-        class="absolute left-[calc(50%+20px)] right-[calc(-50%+10px)] top-5 block h-0.5 shrink-0 rounded-full bg-muted group-data-[state=completed]:bg-primary"
-      />
-
-      <StepperTrigger as-child>
-        <Button
-          :variant="step.state === 'completed' || step.state === 'active' ? 'default' : 'outline'"
-          size="icon"
-          class="z-10 rounded-full shrink-0 pointer-events-none"
-         
-          :class="[step.state === 'active' && 'ring-2 ring-ring ring-offset-2 ring-offset-background']"
+  <div class="flex justify-center min-h-screen mt-10 px-2">
+    <div class="flex flex-col items-center w-full max-w-2xl">
+      <Stepper class="flex w-full items-start gap-2 mb-3">
+        <StepperItem
+          v-for="step in steps"
+          :key="step.step"
+          class="relative flex w-full flex-col items-center justify-center"
+          :step="step.step"
         >
-          <Check v-if="step.state === 'completed'" class="size-5" />
-          <Circle v-if="step.state === 'active'" />
-          <Dot v-if="step.state === 'inactive'" />
-        </Button>
-      </StepperTrigger>
-
-      <div class="mt-5 flex flex-col items-center text-center">
-        <StepperTitle
-          :class="[step.state === 'active' && 'text-primary']"
-          class="text-sm font-semibold transition lg:text-base"
-        >
-          {{ step.title }}
-        </StepperTitle>
-        <StepperDescription
-          :class="[step.state === 'active' && 'text-primary']"
-          class="sr-only text-xs text-muted-foreground transition md:not-sr-only lg:text-sm"
-        >
-          {{ step.description }}
-        </StepperDescription>
-      </div>
-    </StepperItem>
-  </Stepper>
-          
-   <GeneralQuizForm v-if="currentStep === 1" :general="GeneralQuizForm" @next="handleNext"/>
-    <QuizParameters v-if="currentStep === 2" @back="handlePrevious" @start="handleStart"/>
-             
+          <StepperSeparator
+            v-if="step.step !== steps[steps.length - 1].step"
+            class="absolute left-[calc(50%+20px)] right-[calc(-50%+10px)] top-5 block h-0.5 shrink-0 rounded-full bg-muted group-data-[state=completed]:bg-primary"
+          />
+          <StepperTrigger as-child>
+            <Button
+              :variant="step.state === 'completed' || step.state === 'active' ? 'default' : 'outline'"
+              size="icon"
+              class="z-10 rounded-full shrink-0 pointer-events-none"
+              :class="[step.state === 'active' && 'ring-2 ring-ring ring-offset-2 ring-offset-background']"
+            >
+              <Check v-if="step.state === 'completed'" class="size-5" />
+              <Circle v-if="step.state === 'active'" />
+              <Dot v-if="step.state === 'inactive'" />
+            </Button>
+          </StepperTrigger>
+          <div class="mt-5 flex flex-col items-center text-center">
+            <StepperTitle
+              :class="[step.state === 'active' && 'text-primary']"
+              class="text-sm font-semibold transition lg:text-base"
+            >
+              {{ step.title }}
+            </StepperTitle>
+            <StepperDescription
+              :class="[step.state === 'active' && 'text-primary']"
+              class="sr-only text-xs text-muted-foreground transition md:not-sr-only lg:text-sm"
+            >
+              {{ step.description }}
+            </StepperDescription>
+          </div>
+        </StepperItem>
+      </Stepper>
+      <GeneralQuizForm v-if="currentStep === 1" :general="GeneralQuizForm" @next="handleNext" class="w-full" />
+      <QuizParameters v-if="currentStep === 2" @back="handlePrevious" @start="handleStart" class="w-full" />
     </div>
-   </div>
+  </div>
 </template>
 
 <script>

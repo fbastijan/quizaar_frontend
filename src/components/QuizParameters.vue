@@ -6,42 +6,40 @@
     </CardHeader>
     <CardContent>
       <form>
-        <div class="grid items-center w-full gap-4">
-          <div class="flex flex-col space-y-1.5">
-            <Label for="title">Topic</Label>
-            <Input id="title" placeholder="Give your quiz a topic..."  v-model="parameters.topic"/>
+        <div class="flex flex-col space-y-4 w-full">
+          <Label for="title">Topic</Label>
+          <Input id="title" placeholder="Give your quiz a topic..." v-model="parameters.topic" class="w-full" />
 
-            <NumberField :default-value="10" :min="5" :max="100" class="w-full mt-3" v-model="parameters.questions">
-              <Label class="mb-2">How many questions do you want?</Label>
-              <div class="flex justify-between">
-                <NumberFieldContent>
-                  <NumberFieldDecrement />
-                  <NumberFieldInput />
-                  <NumberFieldIncrement />
-                </NumberFieldContent>
-              </div>
-            </NumberField>
-
-            <Label class="mt-3">Difficulty</Label>
-            <Slider
-              v-model="slide"
-              :min="1"
-              :max="5"
-              :step="1"
-              class="mt-2"
-            />
-            <div class="flex justify-between text-xs text-muted-foreground mt-1 px-1">
-              <span>Very Easy</span>
-              <span>Easy</span>
-              <span>Medium</span>
-              <span>Hard</span>
-              <span>Very Hard</span>
+          <NumberField :default-value="10" :min="5" :max="100" class="w-full mt-3" v-model="parameters.questions">
+            <Label class="mb-2">How many questions do you want?</Label>
+            <div class="flex justify-between">
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
             </div>
-            <div class="text-right text-sm mt-1">Selected: <b>{{ difficultyLabel }}</b></div>
+          </NumberField>
 
-            <Label class="mt-3">Additional context</Label>
-            <Textarea id="description" placeholder="Do you want to specify anything?" class="h-24 resize-none" v-model="parameters.context"/>
+          <Label class="mt-3">Difficulty</Label>
+          <Slider
+            v-model="slide"
+            :min="1"
+            :max="5"
+            :step="1"
+            class="mt-2"
+          />
+          <div class="flex justify-between text-xs text-muted-foreground mt-1 px-1">
+            <span>Very Easy</span>
+            <span>Easy</span>
+            <span>Medium</span>
+            <span>Hard</span>
+            <span>Very Hard</span>
           </div>
+          <div class="text-right text-sm mt-1">Selected: <b>{{ difficultyLabel }}</b></div>
+
+          <Label class="mt-3">Additional context</Label>
+          <Textarea id="description" placeholder="Do you want to specify anything?" class="h-24 resize-none break-words w-full" v-model="parameters.context"/>
         </div>
       </form>
     </CardContent>
@@ -51,7 +49,6 @@
     </CardFooter>
   </Card>
 </template>
-
 <script>
 import {
   Card,

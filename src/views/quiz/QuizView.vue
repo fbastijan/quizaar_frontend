@@ -1,7 +1,7 @@
 <template>
-    <div class="flex gap-6 justify-center mt-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 mt-12 gap-10 lg:mx-50 sm:mx-20 mx-4">
         <!-- Join Quiz Card -->
-        <Card class="w-[28rem]">
+        <Card class=" col-span-1 ">
             <CardHeader>
                 <CardTitle>Join Quiz</CardTitle>
             </CardHeader>
@@ -17,7 +17,7 @@
             </CardFooter>
         </Card>
         <!-- Create Quiz Card -->
-        <Card class="w-[28rem]">
+        <Card class="col-span-1 ">
             <CardHeader>
                 <CardTitle>Create a New Quiz</CardTitle>
             </CardHeader>

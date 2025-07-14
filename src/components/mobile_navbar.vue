@@ -82,7 +82,7 @@ const accountStore = useAccountStore()
             </li>
            
               <li>
-            <router-link to="/settings" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="accountStore">
+            <router-link to="/account/settings" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="accountStore">
                 Settings
             </router-link>
             </li>

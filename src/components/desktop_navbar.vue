@@ -61,7 +61,7 @@ Profile</NavigationMenuTrigger>
             <ul class=" ">
 
                     <li  v-if="accountStore.accountData">
-                <NavigationMenuLink as-child>
+                <NavigationMenuLink as-child href="/account/settings">
                   <a>
                     Settings
                   </a>
@@ -143,9 +143,9 @@ export default {
           description: 'Start your quiz journey by creating a new quiz.',
         },
         {
-          title: 'See Past Quizzes',
-          href: '/quiz/list',
-          description: 'See what you already played.',
+          title: 'See Made Quizzes',
+          href: '/quiz/list/user',
+          description: 'See what you already made',
         },
         {
           title: 'Join Quiz',
