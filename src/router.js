@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
-import AboutView from '@/views/AboutView.vue'
+
 import QuizView from '@/views/quiz/QuizView.vue'
 import RegisterView from './views/authorization/RegisterView.vue'
 import LoginView from './views/authorization/LoginView.vue'
@@ -15,7 +15,7 @@ import FinalResultView from './views/quiz/FinalResultView.vue'
 import UserQuizListView from './views/quiz/UserQuizListView.vue'
 const routes = [
   { path: '/', component: HomeView },
-    { path: '/about', component: AboutView },
+   
     { path: '/quiz', component: QuizView, name: 'QuizView' },
     {path: '/register', component: RegisterView }, 
      {path: '/login', component: LoginView },

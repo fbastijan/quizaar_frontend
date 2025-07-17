@@ -8,7 +8,9 @@ import auth from '@/api/account.api';
 
 export const useAccountStore = defineStore('account', {
   state: () => {
-    return { accountData: null, }
+    return { accountData: null, 
+      userData: null,
+    }
   },
  
   actions: {
@@ -38,7 +40,7 @@ export const useAccountStore = defineStore('account', {
          id: this.accountData.id
         }
 
-        let user = await auth.updateProfile(profileData, password); 
+        let user = await auth.updateAccount(profileData, password); 
 
         
           this.accountData = {
@@ -73,7 +75,7 @@ export const useAccountStore = defineStore('account', {
     logOut() {
       auth.logOut();
       this.accountData = null;
-      window.location.href = "/login"; // Redirect to login page after logout
+     
     },
    async getCurrentUser() {
     try {
@@ -84,13 +86,26 @@ export const useAccountStore = defineStore('account', {
         token: localStorage.getItem("token"),
 
       };
+      this.userData = user.user;
       return user;
     } catch (error) {
       this.logOut();
 
       return null; // Re-throw the error for further handling if needed
 
-    }}
+    }},
+    async updateUserProfile(profileData) {
+      try {
+        let user = await auth.updateUser(profileData, this.userData.id);
+        this.userData =user.data
+
+        return user;
+      } catch (error) {
+        console.error("Profile update failed:", error);
+        throw error; // Re-throw the error for further handling if needed
+      }
+    },
+    
    
 },
 

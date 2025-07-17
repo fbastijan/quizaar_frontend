@@ -41,11 +41,7 @@
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="/about" :class="navigationMenuTriggerStyle()">
-            About
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+        
       </NavigationMenuList>
     </NavigationMenu>
 

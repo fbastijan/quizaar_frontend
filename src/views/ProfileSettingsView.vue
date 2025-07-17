@@ -50,11 +50,11 @@
                 <CardContent>
                     <h3 class="text-md font-semibold mb-4">Username</h3>
                     <Input type="text" placeholder="New Username" class="mb-4 w-full" v-model="username"/>
-                    <Button class="" >Update Username</Button>
+                    <Button class=""  @click="updateUsername">Update Username</Button>
 
                     <h3 class="text-md font-semibold mt-6 mb-4">Update Bio</h3>
-                    <Textarea placeholder="Write a short bio about yourself" class="mb-4 w-full h-24 resize-none " />
-                    <Button class="" >Update Bio</Button>
+                    <Textarea placeholder="Write a short bio about yourself" class="mb-4 w-full h-24 resize-none "  v-model="bio"/>
+                    <Button class="" @click="updateBio" >Update Bio</Button>
                 </CardContent>
                 <CardFooter>
            
@@ -150,7 +150,30 @@ import { useAccountStore } from '@/stores/account';
                         console.error("Error updating email:", error);
                         toast.error("Failed to update email");
                     });
+            },
+            updateUsername() {
+                // Logic to update the username
+                this.accountStore.updateUserProfile({ full_name: this.username })
+                    .then(() => {
+                        toast.success("Username updated successfully");
+                    })
+                    .catch((error) => {
+                        console.error("Error updating username:", error);
+                        toast.error("Failed to update username");
+                    });
+            },
+            updateBio() {
+                // Logic to update the bio
+                this.accountStore.updateUserProfile({ biography: this.bio })
+                    .then(() => {
+                        toast.success("Bio updated successfully");
+                    })
+                    .catch((error) => {
+                        console.error("Error updating bio:", error);
+                        toast.error("Failed to update bio");
+                    });
             }
+
 
             
            
@@ -159,6 +182,8 @@ import { useAccountStore } from '@/stores/account';
        this.accountStore.getCurrentUser().then(() => {
             console.log("Current user data:", this.accountStore.accountData);
             this.new_email = this.accountStore.accountData.email || '';
+            this.username = this.accountStore.userData.full_name || '';
+            this.bio = this.accountStore.userData.biography || '';
           }).catch((error) => {
             console.error("Error fetching current user data:", error);
           });

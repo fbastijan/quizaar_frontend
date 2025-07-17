@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-6 flex flex-col md:flex-col items-center justify-between gap-4 px-3">
+  <div class="mb-6 flex flex-col items-center justify-between pt-30">
     <div class="text-2xl font-bold">
       <Skeleton v-if="loadingQuiz" class="h-8 w-48" />
       <template v-else>
@@ -18,9 +18,9 @@
       </Button>
     </div>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 lg:mx-50">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 p-4 lg:mx-50">
     <template v-if="loadingQuiz">
-      <div class="lg:col-span-2 flex flex-col gap-4">
+      <div class="col-span-1 lg:col-span-2 flex flex-col gap-4">
         <Skeleton class="h-10 w-full mb-2" />
         <Skeleton class="h-32 w-full mb-2" />
         <Skeleton class="h-32 w-full mb-2" />
@@ -28,14 +28,14 @@
     </template>
     <QuizQuestions
       v-else-if="activeQuiz && activeQuiz.questions && activeQuiz.questions.data"
-      class="lg:col-span-2"
+      class="col-span-1 lg:col-span-2"
       :questions="activeQuiz.questions.data"
       @delete-question="deleteQuestion"
       @update-question="openUpdateDialog"
       @add-question="openAddDialog"
     />
 
-    <div class="bg-white shadow-md rounded-lg p-6">
+    <div class="bg-white shadow-md rounded-lg p-6 col-span-1">
       <div>
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold mb-4">Active Users</h2>
@@ -66,7 +66,7 @@
         </ul>
       </div>
     </div>
-    <div class="mt-6 flex justify-end col-span-3">
+    <div class="mt-6 flex justify-end col-span-1 lg:col-span-3">
       <Button class="px-6" @click="startQuiz" :disabled="!canStartQuiz || loadingQuiz || loadingPlayers">Start Quiz</Button>
     </div>
     <UpdateQuestionDialog

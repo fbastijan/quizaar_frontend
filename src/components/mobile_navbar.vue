@@ -64,11 +64,7 @@ const accountStore = useAccountStore()
                 Quiz
             </router-link>
             </li>
-            <li>
-            <router-link to="/about" class="ms-6 flex w-full items-center py-2 text-lg font-semibold">
-                About
-            </router-link>
-            </li>
+           
              <br>
             <li>
             <router-link to="/login" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore">

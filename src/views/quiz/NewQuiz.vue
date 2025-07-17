@@ -1,5 +1,5 @@
 <template>  
-  <div class="flex justify-center min-h-screen mt-10 px-2">
+  <div class="flex justify-center  items-center px-2">
     <div class="flex flex-col items-center w-full max-w-2xl">
       <Stepper class="flex w-full items-start gap-2 mb-3">
         <StepperItem

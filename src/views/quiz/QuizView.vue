@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 lg:grid-cols-2 mt-12 gap-10 lg:mx-50 sm:mx-20 mx-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:mx-50 sm:mx-20 mx-4">
         <!-- Join Quiz Card -->
         <Card class=" col-span-1 ">
             <CardHeader>

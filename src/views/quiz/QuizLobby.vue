@@ -1,16 +1,16 @@
 <template>
-<Card class="max-w-md mx-auto mt-8">
+<Card class="max-w-md mx-auto ">
     <CardHeader>
         <CardTitle>Quiz Lobby</CardTitle>
         <CardDescription>Waiting for the host to start the quiz...</CardDescription>
     </CardHeader>
     <CardContent class="text-center">
         <p class="mb-4">You have joined the quiz as: </p>
-        <p class="font-semibold text-xl mb-4">{{ username }}</p>
+        <p class="font-semibold text-xl mb-4">{{ username2 }}</p>
         <Button @click="readyUp" class="w-full"   :disabled="isReady">Ready Up</Button>
     </CardContent>
     <CardFooter class="flex justify-between">
-        <span>Session ID: {{sessionId}}</span>
+        <span v-if="sessionId">Session ID: {{sessionId}}</span>
         <span>Join Code: {{ $route.params.join_code }}</span>
     </CardFooter>
 </Card>
@@ -22,6 +22,8 @@ import { useSocketStore } from '@/stores/socket';
 
 import {Button} from '@/components/ui/button';
 import { useQuestionStore } from '@/stores/question';
+import { useAccountStore } from '@/stores/account';
+
 import {
   Card,
   CardAction,
@@ -48,15 +50,15 @@ export default {
   setup() {
     const socketStore = useSocketStore();
     const questionStore = useQuestionStore();
-    return { socketStore, questionStore };
+    const accountStore = useAccountStore();
+    return { socketStore, questionStore, accountStore };
   },
   data() {
     return {
       
       sessionId: localStorage.getItem('session_id'),
-      username: localStorage.getItem('name'),
       token: localStorage.getItem('token'),
-     
+      username2: 'Guest', // <-- add this
       addedPlayers: [],
        isReady: false,
     };
@@ -68,9 +70,11 @@ export default {
     currentQuestion() {
       return this.questionStore.currentQuestion;
     },
+ 
   },
  async mounted() {
 
+    
      try {
 
      
@@ -93,9 +97,16 @@ export default {
              localStorage.setItem('name', data.name);
            
         });
+
+         let account = await this.accountStore.getCurrentUser();
+          if (!account || !account.user) {
+            this.username2 = localStorage.getItem('name') || 'Guest';
+          } else {
+            this.username2 = account.user.full_name;
+          }
       try{
         await this.questionStore.QuestionServed(channel, () => {
-  this.$router.push(`/quiz/${this.$route.params.join_code}/current_question`);
+            this.$router.push(`/quiz/${this.$route.params.join_code}/current_question`);
 });
 
       }catch(e) {
@@ -103,7 +114,12 @@ export default {
       }
       
   },
+
   methods: {
+
+    async getName(){
+
+    },
     async readyUp() {
       this.isReady = true;
      await this.socketStore.channel.push('ready_up', { })

@@ -23,7 +23,11 @@ export default {
     };
   },
 
-
+data() {
+    return {
+      sessionId: localStorage.getItem('session_id'),
+      username: localStorage.getItem('username') || 'Guest'
+    }},
 async mounted() {
 
 

@@ -1,47 +1,49 @@
 <template>
-  <Card class="mx-auto max-w-sm">
-    <CardHeader>
-      <CardTitle class="text-xl">
-        Sign Up
-      </CardTitle>
-      <CardDescription>
-        Enter your information to create an account
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <form class="grid gap-4" @submit.prevent="registerAccount">
-        <div class="grid  gap-4">
-          <div class="grid gap-2">
-            <Label for="username">Username</Label>
-            <Input id="username" placeholder="Master23" required v-model="full_name"/>
+  <div class="flex bg-background p-4">
+    <Card class="w-full max-w-sm min-w-[320px] flex-grow-0 min-h-0 mx-auto">
+      <CardHeader>
+        <CardTitle class="text-xl">
+          Sign Up
+        </CardTitle>
+        <CardDescription>
+          Enter your information to create an account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form class="grid gap-4" @submit.prevent="registerAccount">
+          <div class="grid  gap-4">
+            <div class="grid gap-2">
+              <Label for="username">Username</Label>
+              <Input id="username" placeholder="Master23" required v-model="full_name"/>
+            </div>
           </div>
+          <div class="grid gap-2">
+            <Label for="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              v-model="email"
+            />
+          </div>
+          <div class="grid gap-2">
+            <Label for="password">Password</Label>    
+            <Input id="password" type="password" v-model:model-value="password" placeholder="*****"/>
+          </div>
+          <Button type="submit" class="w-full">
+            Create an account
+          </Button>
+        </form>
+        <div class="mt-4 text-center text-sm">
+          Already have an account?
+          <a href="/login" class="underline" >
+            Sign in
+          </a>
         </div>
-        <div class="grid gap-2">
-          <Label for="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-            v-model="email"
-          />
-        </div>
-        <div class="grid gap-2">
-          <Label for="password">Password</Label>    
-          <Input id="password" type="password" v-model:model-value="password" placeholder="*****"/>
-        </div>
-        <Button type="submit" class="w-full">
-          Create an account
-        </Button>
-      </form>
-      <div class="mt-4 text-center text-sm">
-        Already have an account?
-        <a href="/login" class="underline" >
-          Sign in
-        </a>
-      </div>
-    </CardContent>
-  </Card>
+      </CardContent>
+    </Card>
+  </div>
 </template>
 
 <script>

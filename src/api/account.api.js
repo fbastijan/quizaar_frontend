@@ -41,11 +41,13 @@ const auth ={
       return null; // or throw an error
     }
     let response = await Service.get("/accounts/current", {
+
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log("User data:", response.data);
     return response.data;
   },
-  async updateProfile(profileData, password) {
+  async updateAccount(profileData, password) {
     let token = localStorage.getItem("token");
     if (!token) {
       throw new Error("User not authenticated");
@@ -54,6 +56,20 @@ const auth ={
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
+  }
+
+  ,
+  async updateUser(userData, user_id) {
+    let token = localStorage.getItem("token");
+    try {
+      let response = await Service.patch('/users/update', {user: {...userData, id: user_id}}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response;
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
+    }
   }
 
 }

@@ -19,14 +19,20 @@
           :key="option"
           @click="answerQuestion(option)"
             :disabled="isClosed"
-          :class="[
-            colorClasses[idx % colorClasses.length],
-            'hover:scale-105 transition-transform duration-200',
-            'p-4 rounded-xl shadow-lg flex items-center justify-center h-full w-full cursor-pointer text-lg font-semibold',
-             isClosed ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
-          ]"
-        >
-          {{ option }}
+            class="flex items-center gap-4 cursor-pointer transition-colors duration-200
+                   p-4 rounded-xl shadow-lg h-full w-full font-semibold
+                   border border-black bg-white text-black
+                   hover:bg-black hover:text-white"
+            :class="isClosed ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''"
+          >
+          <span
+            class="flex items-center justify-center rounded-full border-2 border-black bg-white text-black font-bold w-12 h-12 text-xl
+                   mr-2 transition-colors duration-200
+                   hover:bg-black hover:text-white"
+          >
+            {{ String.fromCharCode(65 + idx) }}
+          </span>
+          <span>{{ option }}</span>
         </li>
       </ul>
       <div class="grid grid-cols-2 gap-4 p-4 h-full" v-else>
@@ -79,12 +85,7 @@ import { Button } from '@/components/ui/button';
         localTimeLeft: 0,
         userAnswer: '',
         timer: null, // <-- Add this line to ensure timer is tracked
-      colorClasses: [
-        'bg-green-200 hover:bg-green-300 active:bg-green-400 focus:ring-2 focus:ring-green-400',
-        'bg-blue-200 hover:bg-blue-300 active:bg-blue-400 focus:ring-2 focus:ring-blue-400',
-        'bg-yellow-200 hover:bg-yellow-300 active:bg-yellow-400 focus:ring-2 focus:ring-yellow-400',
-        'bg-red-200 hover:bg-red-300 active:bg-red-400 focus:ring-2 focus:ring-red-400'
-      ],
+    
 
       correctAnswer: 'Paris',
     };
@@ -112,6 +113,7 @@ import { Button } from '@/components/ui/button';
  answerQuestion(answer) {
         
         this.$emit('answer', answer);
+        this.userAnswer = ''; 
 
 
  },

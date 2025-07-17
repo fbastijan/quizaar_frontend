@@ -99,7 +99,7 @@ async getQuestions(quiz_id) {
       throw error;
     }
 
-  },
+  }
   
 }
 export default quizApi;

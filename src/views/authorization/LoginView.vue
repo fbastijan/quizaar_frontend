@@ -1,5 +1,6 @@
 <template>
-  <Card class="mx-auto max-w-sm">
+  <div class="flex  items-center justify-center  p-4">
+  <Card class="w-full max-w-sm min-w-[320px] flex-grow-0 min-h-0 mx-auto">
     <CardHeader>
       <CardTitle class="text-2xl">
         Login
@@ -41,6 +42,7 @@
       </div>
     </CardContent>
   </Card>
+  </div>
 </template>
 
 <script>

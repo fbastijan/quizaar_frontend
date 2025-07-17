@@ -1,16 +1,16 @@
 
 <template>
-<div >
+<div class="fixed top-0 left-0 w-full z-50 bg-white ">
   <Toaster position="top-center" />
   
-  <div class="hidden lg:block">
+  <div class="hidden lg:block  ">
     <DesktopNavbar  />
   </div>
  <div class="lg:hidden">
  <MobileNavbar  />
  </div>
 </div>
-<RouterView />
+<RouterView class="mt-30 " />
 </template>
 
 
