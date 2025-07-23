@@ -1,10 +1,10 @@
 import {Service} from '@/api/axiosService.js';
-    const token = localStorage.getItem("token");
 const quizApi = {
 
 
   async createQuiz(quizData) {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.post('/quizzes/create', quizData, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -18,7 +18,8 @@ const quizApi = {
 },
 async generateQuestions(quiz_id, params){
     try {
-        let response = await Service.post(`/quizzes/${quiz_id}/generate_questions`, params, {
+      let token = localStorage.getItem("token");
+      let response = await Service.post(`/quizzes/${quiz_id}/generate_questions`, params, {
         headers: { Authorization: `Bearer ${token}` },
         });
         return response;
@@ -29,6 +30,7 @@ async generateQuestions(quiz_id, params){
 },
 async getQuestions(quiz_id) {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.get(`/quizzes/${quiz_id}/questions`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -41,6 +43,7 @@ async getQuestions(quiz_id) {
 
   async getQuiz(joinCode) {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.get(`/quizzes/${joinCode}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -53,6 +56,7 @@ async getQuestions(quiz_id) {
   },
   async deleteQuestion( question_id) {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.delete(`/questions/${question_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,6 +68,7 @@ async getQuestions(quiz_id) {
   },
   async updateQuestion(question_id, questionData) {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.patch(`/questions/${question_id}`, {question: {...questionData}}, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -76,6 +81,7 @@ async getQuestions(quiz_id) {
 
   async getQizzessbyUser() {
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.get('/quizzes/list/user', {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -88,7 +94,9 @@ async getQuestions(quiz_id) {
     }
 },
   async createQuestion(questionData) {
+
     try {
+      let token = localStorage.getItem("token");
       let response = await Service.post('/questions/create', {question: {...questionData}}, {
         headers: { Authorization: `Bearer ${token}` },
       });

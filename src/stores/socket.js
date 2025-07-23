@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Socket, Presence } from 'phoenix';
 
 
-const baseURL ="ws://localhost:4000/socket" 
+const baseURL ="ws://localhost:4001/socket" 
 export const useSocketStore = defineStore('socket', {
     state: () => ({
         socket: null,
