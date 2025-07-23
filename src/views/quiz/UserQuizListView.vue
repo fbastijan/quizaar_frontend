@@ -1,9 +1,9 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-background mt-30 lg:mt-0 lg:mb-0 mb-3">  ">
+  <div class="flex lg:min-h-screen items-center justify-center bg-background lg:mt-0 lg:mb-0 mb-3">  ">
     <Pagination v-slot="{ page }" :items-per-page="itemsPerPage" :total="quizzes.length" :default-page="1" class="w-full">
       <PaginationContent v-slot="{ items }">
         <div class="w-full">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6 min-h-[70vh] max-h-[70vh] overflow-y-auto">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6 min-h-[70vh] items-start">
             <Card
               v-for="quiz in paginatedQuizzes(page)"
               :key="quiz.id"
@@ -19,7 +19,7 @@
                 <p class="text-sm text-gray-500">{{dateAndTime(quiz.inserted_at) }}</p>
                 </CardTitle>
               </CardHeader>
-              <CardContent class="flex flex-col flex-1">
+              <CardContent class="flex flex-col">
                 <p
                   class="mb-4 text-sm md:text-base lg:text-lg text-gray-600 flex-1 break-words truncate"
                   style="word-break: break-word; overflow-wrap: break-word; max-height: 6em;"

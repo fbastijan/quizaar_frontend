@@ -1,33 +1,43 @@
 <template>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:mx-50 sm:mx-20 mx-4">
+    <div class="flex justify-center mt-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:mx-32 sm:mx-10 mx-2 max-w-3xl">
         <!-- Join Quiz Card -->
-        <Card class=" col-span-1 ">
+        <Card class="col-span-1 p-4 max-w-md mx-auto flex flex-col h-full">
             <CardHeader>
-                <CardTitle>Join Quiz</CardTitle>
+                <CardTitle class="text-xl">Join Quiz</CardTitle>
             </CardHeader>
             <CardContent>
-                <p class="mb-6 text-gray-500 text-center">Enter a code to join an existing quiz.</p>
-                <div class="flex flex-col gap-4 px-20">
+                <p class="mb-4 text-gray-500 text-center text-sm">Enter a code to join an existing quiz.</p>
+                <div class="flex flex-col gap-3 px-4">
                     <Input placeholder="Join Code" v-model="join_code" />
-                    <Input placeholder="Your Name" v-model="name"  :disabled="token"/>
+                    <Input placeholder="Your Name" v-model="name" :disabled="token"/>
                 </div>
             </CardContent>
+            <div class="flex-1"></div>
             <CardFooter class="flex justify-end">
-                <Button @click="goToLobby" >Join<ChevronRight class="size-4"/></Button>
+                <Button @click="goToLobby" size="sm">Join<ChevronRight class="size-4"/></Button>
             </CardFooter>
         </Card>
         <!-- Create Quiz Card -->
-        <Card class="col-span-1 ">
+        <Card class="col-span-1 p-4 max-w-md mx-auto flex flex-col h-full">
             <CardHeader>
-                <CardTitle>Create a New Quiz</CardTitle>
+                <CardTitle class="text-xl">Create a New Quiz</CardTitle>
             </CardHeader>
-            <CardContent class=" h-full">
-                <p class="mb-6 text-gray-500 text-center">Start a new quiz and invite others to join.</p>
-            </CardContent>
+            <div class="flex flex-col flex-1 justify-center">
+                <CardContent>
+                    <p class="mb-4 text-gray-500 text-center text-sm">Start a new quiz and invite others to join.</p>
+                    <div class="flex justify-center mt-2">
+                      <a to="quiz/list/user" href="quiz/list/user" class="text-blue-600 underline text-xs hover:text-blue-800">
+                        View My Quizzes
+                      </a>
+                    </div>
+                </CardContent>
+            </div>
             <CardFooter class="flex justify-end">
-                <Button @click="goToCreateQuiz">Create  <ChevronRight></ChevronRight></Button>
+                <Button @click="goToCreateQuiz" size="sm">Create <ChevronRight class="size-4"/></Button>
             </CardFooter>
         </Card>
+      </div>
     </div>
 </template>
 
