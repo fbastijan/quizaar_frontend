@@ -3,7 +3,7 @@
     <Pagination v-slot="{ page }" :items-per-page="itemsPerPage" :total="quizzes.length" :default-page="1" class="w-full">
       <PaginationContent v-slot="{ items }">
         <div class="w-full">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6 min-h-[70vh]">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-6 min-h-[70vh] max-h-[70vh] overflow-y-auto">
             <Card
               v-for="quiz in paginatedQuizzes(page)"
               :key="quiz.id"
