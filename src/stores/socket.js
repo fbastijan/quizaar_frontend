@@ -3,8 +3,8 @@ import { Socket, Presence } from 'phoenix';
 
 
 const baseURL = process.env.NODE_ENV === "development"
-  ? "http://localhost:4000" // Local development
-  : "http://116.203.210.54:4001"; // Production
+  ? "http://localhost:4000/socket" // Local development
+  : "http://116.203.210.54:4001/socket"; // Production
 export const useSocketStore = defineStore('socket', {
     state: () => ({
         socket: null,
