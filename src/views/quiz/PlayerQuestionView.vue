@@ -78,7 +78,7 @@ import Score from '@/components/Score.vue';
               this.isClosed = true; 
             })
             .receive('error', (error) => {
-              toast.error("Error submitting answer: " + error.message);
+              toast.error("Error submitting answer: " + error);
             });
         } catch (e) {
           console.error("Error submitting answer:", e);

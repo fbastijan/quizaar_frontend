@@ -140,14 +140,14 @@ export default {
   async mounted() {
 
    
-        if (!this.socketStore.channel) {
+        this.socketStore.channel
       const joinCode = this.$route.params.join_code;
       if (!joinCode) {
         console.error("No join_code in route params");
         return;
       }
       await this.socketStore.joinChannel(`quiz:${joinCode}`, { token: localStorage.getItem('token') , session_id: this.sessionId, name: this.username });
-    }
+    
 
     const channel = this.socketStore.channel;
     try {
