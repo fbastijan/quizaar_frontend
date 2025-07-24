@@ -41,7 +41,7 @@
         </StepperItem>
       </Stepper>
       <GeneralQuizForm v-if="currentStep === 1" :general="GeneralQuizForm" @next="handleNext" class="w-full" />
-      <QuizParameters v-if="currentStep === 2" @back="handlePrevious" @start="handleStart" class="w-full" />
+      <QuizParameters v-if="currentStep === 2" @back="handlePrevious" @start="handleStart" :loading="loading" class="w-full" />
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ import {
 } from '@/components/ui/stepper'
 import GeneralQuizForm from "@/components/GeneralQuizForm.vue"
 import QuizParameters from "@/components/QuizParameters.vue"
-import quizApi from "@/api/Quiz.api"
+
 
 export default {
   name: "NewQuiz",
@@ -121,7 +121,8 @@ export default {
     GeneralQuizForm: {
         title: '',
         description: ''
-      }
+      },
+      loading: false,
 
     }
    
@@ -130,8 +131,9 @@ export default {
 
   methods: {
     async handleStart(parameters) {
+      this.loading = true;
       let response;
-        try {
+      try {
         
            response = await this.quizStore.createQuiz( {quiz: {...this.GeneralQuizForm}}, parameters);
 
@@ -142,7 +144,9 @@ export default {
         } catch (error) {
           console.error('Error creating quiz:', error);
           
-        }
+        } finally {
+        this.loading = false;
+      }
 
         
     },
