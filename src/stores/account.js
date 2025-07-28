@@ -29,8 +29,8 @@ export const useAccountStore = defineStore('account', {
         
         return user;
       } catch (error) {
-        console.error("Registration failed:", error);
-        throw error; // Re-throw the error for further handling if needed
+      
+        throw error; 
       }
     },
     async updateAccountProfile(profileData, password) {
@@ -50,25 +50,26 @@ export const useAccountStore = defineStore('account', {
           }
         return user;
       } catch (error) {
-        console.error("Profile update failed:", error);
+        
         throw error; 
       }
     },
     async loginAccount(email, password) {
       try {
         let user = await auth.login(email, password);
-
+       
         this.accountData =  {
   
-          email: user.email,
-        id: user.id,
-        token: user.token,
-      };
-      console.log("User logged in:", this.accountData);
+          email: user.data.email,
+          id: user.data.id,
+          token: user.data.token,
+        };
+        localStorage.setItem("token", user.data.token);
+        
         return user;
       } catch (error) {
-        console.error("Login failed:", error);
-        throw error; // Re-throw the error for further handling if needed
+      
+        throw error;
       }
     },
 
@@ -87,11 +88,11 @@ export const useAccountStore = defineStore('account', {
 
       };
       this.userData = user.user;
-      return user;
+      return this.userData;
     } catch (error) {
       this.logOut();
 
-      return null; // Re-throw the error for further handling if needed
+      return null; 
 
     }},
     async updateUserProfile(profileData) {
@@ -101,8 +102,8 @@ export const useAccountStore = defineStore('account', {
 
         return user;
       } catch (error) {
-        console.error("Profile update failed:", error);
-        throw error; // Re-throw the error for further handling if needed
+     
+        throw error;
       }
     },
     

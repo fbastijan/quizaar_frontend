@@ -52,6 +52,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { toast } from 'vue-sonner'
 
 
 
@@ -78,6 +79,7 @@ export default {
     description: 'A sign up form with first name, last name, email and password inside a card. There\'s an option to sign up with GitHub and a link to login if you already have an account'
   },
 
+
   data(){
     return {
       full_name: '',
@@ -88,19 +90,15 @@ export default {
 
   methods:{
     async registerAccount() {
-      console.log('Registering account with:', {
-        full_name: this.full_name,
-        email: this.email,
-        password: this.password
-      })
+    
       this.accountStore.registerAccount(this.full_name, this.email, this.password)
         .then(() => {
-          console.log(this.accountStore.accountData)
+   
           this.$router.push('/login')
         })
         .catch((error) => {
-          console.error('Registration failed:', error)
-          alert('Registration failed. Please try again.')
+
+          toast.error('Registration failed. User already exists.')
         })
     }
   }

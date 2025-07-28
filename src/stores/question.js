@@ -16,9 +16,8 @@ export const useQuestionStore = defineStore('question', {
        await channel.push('get_current_question', {})
         .receive('ok', (response) => {
           this.currentQuestion = response.question.data;
-          this.timeLeft = response.time_left || 0; // Set timeLeft from the response
-          console.log("Current question fetched:", response);
-          console.log("Current question data:", this.currentQuestion);
+          this.timeLeft = response.time_left || 0;
+          
         })
         .receive('error', (error) => {
           toast.error('Failed to fetch current question', {
@@ -31,9 +30,8 @@ export const useQuestionStore = defineStore('question', {
     async ActiveQuestion(channel) { 
       await channel.on('active_question' , (response) => {
           this.currentQuestion = response.question.data;
-          this.timeLeft = response.time_left || 0; // Set timeLeft from the response
-          console.log("Active question received:", response);
-          console.log("Current question data:", this.currentQuestion);
+          this.timeLeft = response.time_left || 0;
+        
         });
       
 
@@ -43,9 +41,8 @@ export const useQuestionStore = defineStore('question', {
       await channel.push('serve_question')
         .receive('ok', (response) => {
           this.currentQuestion = response.question.data;
-          this.timeLeft = response.time_left || 0; // Set timeLeft from the response
-          console.log("Question served:", response);
-          console.log("Current question data:", this.currentQuestion);
+          this.timeLeft = response.time_left || 0;
+         
         })
         .receive('error', (error) => {
           toast.error('Failed to serve question', {

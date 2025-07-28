@@ -10,7 +10,7 @@ const quizApi = {
     });
       return response;
     } catch (error) {
-      console.error("Error creating quiz:", error);
+     
       throw error;
     }
     
@@ -24,7 +24,7 @@ async generateQuestions(quiz_id, params){
         });
         return response;
     } catch (error) {
-        console.error("Error generating questions:", error);
+     
         throw error;
     }
 },
@@ -36,7 +36,7 @@ async getQuestions(quiz_id) {
       });
       return response;
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      
       throw error;
     }
   },
@@ -47,10 +47,10 @@ async getQuestions(quiz_id) {
       let response = await Service.get(`/quizzes/${joinCode}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Quiz data:", response.data);
+      
       return response.data;
     } catch (error) {
-      console.error("Error fetching questions:", error);
+  
       throw error;
     }
   },
@@ -62,7 +62,7 @@ async getQuestions(quiz_id) {
       });
       return response;
     } catch (error) {
-      console.error("Error deleting question:", error);
+    
       throw error;
     }
   },
@@ -74,7 +74,7 @@ async getQuestions(quiz_id) {
       });
       return response;
     } catch (error) {
-      console.error("Error updating question:", error);
+      
       throw error;
     }
   },
@@ -86,10 +86,10 @@ async getQuestions(quiz_id) {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Quizzes by user:", response.data);
+     
       return response.data;
     } catch (error) {
-      console.error("Error fetching quizzes by user:", error);
+      
       throw error;
     }
 },
@@ -103,7 +103,7 @@ async getQuestions(quiz_id) {
 
       return response;
     } catch (error) {
-      console.error("Error creating question:", error);
+     
       throw error;
     }
 

@@ -14,21 +14,22 @@ export const useQuizStore = defineStore('quiz', {
     actions: {
         async createQuestion(questionData) {
             try {
-                console.log("Creating question with data:", this.activeQuiz);
+                
                 
                 questionData.quiz_id = this.activeQuiz.id; // Ensure the question is linked to the active quiz
                 
                const response = await quizApi.createQuestion(questionData);
                 const newQuestion = response.data;
                 this.activeQuiz.questions.data.push(newQuestion);
-                console.log("New question created:", newQuestion);
+               
                 // Simulate an API call to create a new question
              
                 
                 
                
             } catch (error) {
-                console.error("Failed to create question:", error);
+                
+                throw error; // Re-throw the error for further handling if needed
             }
         },
         async createQuiz(quizData ,parameters) {
@@ -49,7 +50,8 @@ export const useQuizStore = defineStore('quiz', {
 
             return newQuiz; 
         } catch (error) {
-            console.error("Failed to create quiz:", error);
+        
+            throw error; 
         }
         },
         async joinQuiz(joinCode) {
@@ -58,7 +60,7 @@ export const useQuizStore = defineStore('quiz', {
             const response = await fetch(`/api/quizzes/join/${joinCode}`);
             this.activeQuiz = await response.json();
         } catch (error) {
-            console.error("Failed to join quiz:", error);
+            throw error;
         }
         },
         async fetchQuiz(joinCode) {
@@ -67,22 +69,22 @@ export const useQuizStore = defineStore('quiz', {
              
                 this.activeQuiz = res.data.quiz;
                 this.activeQuiz.questions = res.data.questions;
-                console.log("Fetched quiz:", this.activeQuiz);
+               
                 return res
             } catch (error) {
-                console.error("Failed to fetch quiz:", error);
+                    throw error;
             }
         },
 
         async deleteQuestion(question_id) {
             try {
                 const response = await quizApi.deleteQuestion(question_id);
-                //console.log("Question deleted:", response);
-                //console.log("Active quiz before deletion:", this.activeQuiz.questions);
+              
                 this.activeQuiz.questions.data = this.activeQuiz.questions.data.filter(q => q.id !== question_id);
               
             } catch (error) {
-                console.error("Failed to delete question:", error);
+              
+                throw error;
             }
         },
       async updateQuestion(updatedQuestion) {
@@ -97,7 +99,8 @@ export const useQuizStore = defineStore('quiz', {
                     this.activeQuiz.questions.data[index] = response.data.data;
                 }
             } catch (error) {
-                console.error("Failed to update question:", error);
+              
+                throw error;
             }
             
 },   

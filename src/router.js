@@ -42,6 +42,7 @@ router.beforeEach((to, from, next) => {
   const javneStranice = [
     /^\/login$/,
     /^\/register$/,
+    /^\/$/,
     /^\/quiz\/join$/,
     /^\/quiz\/lobby(\/[^/]+)?$/, 
     /^\/quiz\/[^/]+\/current_question$/,

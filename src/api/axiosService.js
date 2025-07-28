@@ -21,9 +21,9 @@ Service.interceptors.response.use(
         duration: 2000,   
       });
         auth.logOut();
-      $router.go();
+      $router.push("/login");
     }
-    // console.error('Interceptor', error.response);
+   
   }
 );
 export {Service, baseURL};

@@ -7,17 +7,13 @@ const auth ={
     let response = await Service.post("/accounts/sign_in",
       { email: email, hash_password: password }
     );
-    let user = response.data;
-    localStorage.setItem("token", user.token);
- 
-   
 
-    return user;
+    return response;
   },
 
 
   async register(userDetail) {
-    console.log("userDetail", userDetail); // Debugging line to check the email value
+    
     
   let res  = await Service.post("/accounts/create", {
       account:{
@@ -44,7 +40,7 @@ const auth ={
 
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("User data:", response.data);
+  
     return response.data;
   },
   async updateAccount(profileData, password) {
@@ -67,7 +63,7 @@ const auth ={
       });
       return response;
     } catch (error) {
-      console.error("Error updating user:", error);
+      
       throw error;
     }
   }

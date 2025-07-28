@@ -22,11 +22,11 @@ export const useScoreStore = defineStore('score', {
             this.currentPlayerScore = response.player.score;
             this.placement = response.player.placement;
             this.lowerPlayerScore= response.lower_player;
-           console.log("Player scores fetched:", response);
+           
           });
         
         } catch (e) {
-          console.error("Error fetching score:", e);
+          throw e;
         }
       }
       , async trackResults(channel) {
@@ -34,13 +34,12 @@ export const useScoreStore = defineStore('score', {
         channel.push('players_stats', { })
           .receive('ok', (response) => {
             this.PlayerScores = response.players;
-            console.log('Player stats received:', this.PlayerScores);
           })
           .receive('error', (error) => {
-            console.error('Error receiving player stats:', error);
+           throw error;
           });
       } catch (error) {
-        console.error("Error getting player stats:", error);
+        throw error;
       }
     },
         

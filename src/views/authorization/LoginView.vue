@@ -10,7 +10,7 @@
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <form class="grid gap-4" @submit.prevent="loginAccount(email, password)">
+      <form class="grid gap-4" @submit.prevent="loginAccount">
         <div class="grid gap-2">
           <Label for="email">Email</Label>
           <Input
@@ -51,6 +51,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { toast } from 'vue-sonner'
 
 export default {
   name: 'LoginView',
@@ -64,27 +65,23 @@ export default {
     Input,
     Label
   },
-  setup() { 
-    const accountStore = useAccountStore()
-    return {
-      accountStore
-    }
-  },
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      accountStore: useAccountStore()
     }
   },
   methods: {
-    loginAccount(email, password) {
-      this.accountStore.loginAccount(email, password)
-        .then(() => {
-          this.$router.push('/') // Redirect to dashboard after successful login
+    loginAccount() {
+      this.accountStore.loginAccount(this.email, this.password)
+        .then((response) => {
+          
+          
+          this.$router.push("/")
         })
         .catch((error) => {
-          console.error('Login failed:', error)
-          // Handle error (e.g., show a notification)
+          toast.error('Login failed. Please check your credentials.') 
         })
     }
   }
