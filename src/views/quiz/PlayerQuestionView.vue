@@ -2,13 +2,14 @@
 
    <div>
     
-    <Score :oldScore="pastScore" :newScore="currentPlayerScore" :duration="400"  :higher="higher" :lower="lower" :placement="placement"/>
+    <Score :oldScore="pastScore"  :newScore="currentPlayerScore" :duration="400"  :higher="higher" :lower="lower" :placement="placement"/>
       <CurrentQuestion
         v-if="currentQuestion"
         :question="currentQuestion"
         :time_left="timeLeft"
         @answer="handleAnswer"
         :isClosed="isClosed"
+        :answer="answer"
       />
       <div v-else>
         <SkeletonCurrentQuestion />
@@ -21,11 +22,12 @@
 import CurrentQuestion from '@/components/CurrentQuestion.vue';
 import { useSocketStore } from '@/stores/socket';
 import SkeletonCurrentQuestion from '@/components/SkeletonCurrentQuestion.vue';
-import {toast } from 'vue-sonner';
+import { toast } from 'vue-sonner';
 import { useQuestionStore } from '@/stores/question';
 import { useScoreStore } from '@/stores/score';
 import { useQuizStore } from '@/stores/quiz';
 import Score from '@/components/Score.vue';
+
 
  export default {
   setup(){
@@ -58,6 +60,7 @@ import Score from '@/components/Score.vue';
        
       isClosed: false, 
       pastScore: 0,
+      answer: null,
     
      };
    },
@@ -144,7 +147,7 @@ await this.scoreStore.getScore(channel);
   try{
     await this.questionStore.QuestionServed(channel, () => {
 
-    this.isClosed = false; // Reset isClosed when a new question is served
+    this.isClosed = false; 
     });
   }catch(e) {
     console.error("Error fetching current question:", e);
@@ -153,7 +156,7 @@ await this.scoreStore.getScore(channel);
   this.quizStore.quizEnd(channel, (response) => {
        const join_code = this.$route.params.join_code;
         this.$router.push('/quiz/'+ join_code +'/results');
-        toast.success("Quiz has ended!");
+        
       
     });
 
@@ -161,14 +164,17 @@ await this.scoreStore.getScore(channel);
 
   channel.on('question_closed', (data) => {
       this.isClosed = true; // Set isClosed to true when the question is closed
-      console.log('Question closed:', data);
+      console.log('Question closed:', data.answer);
+      this.answer = data.answer; // Save the answer when the question is closed
+
     });
 
     channel.on('answer_received', (data) => {
       
-    
+      console.log('Answer received:', data);
        this.pastScore = this.scoreStore.currentPlayerScore ?? 0; // Save the old score
       this.scoreStore.getScore(channel); // This will update currentPlayerScore
+
 
     });
 

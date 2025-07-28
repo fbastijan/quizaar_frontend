@@ -182,7 +182,9 @@ export default {
 
       } catch (error) {
 
-        console.log(error);
+        toast.error("Error joining channel: " + error.message, {
+          position: "bottom-right"
+        });
       }
 
       await this.getQuiz();

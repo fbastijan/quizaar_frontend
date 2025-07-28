@@ -45,10 +45,8 @@ export const useQuestionStore = defineStore('question', {
          
         })
         .receive('error', (error) => {
-          toast.error('Failed to serve question', {
-            description: error.message || 'An error occurred while serving the question.',
-            duration: 2000,
-          });
+          return error
+        
         });
     },
 

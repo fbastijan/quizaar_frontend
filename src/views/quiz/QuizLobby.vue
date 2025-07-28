@@ -58,7 +58,7 @@ export default {
       
       sessionId: localStorage.getItem('session_id'),
       token: localStorage.getItem('token'),
-      username2: 'Guest', // <-- add this
+      username2: 'Guest',
       addedPlayers: [],
        isReady: false,
     };
@@ -73,11 +73,10 @@ export default {
  
   },
  async mounted() {
-
-    
-     try {
-
-     
+    localStorage.setItem('name', this.$route.query.name);
+   this.username2 = this.$route.query.name || 'Guest';
+    try {
+        this.sessionId = localStorage.getItem('session_id');
             let res = await this.socketStore.joinChannel(`quiz:${this.$route.params.join_code}`, {name: this.$route.query.name, token: this.token, session_id: this.sessionId});
           
             console.log("Joined quiz channel:", res);
@@ -90,13 +89,13 @@ export default {
        const channel= this.socketStore.channel;
 
       channel.on('guest_joined', (data) => {
-              console.log('Guest joined:', data);
-              // Store session_id and name in sessionStorage
+          
              
              localStorage.setItem('session_id', data.session_id);
              localStorage.setItem('name', data.name);
            
         });
+
 
          let account = await this.accountStore.getCurrentUser();
           if (!account || !account.user) {
@@ -117,9 +116,7 @@ export default {
 
   methods: {
 
-    async getName(){
-
-    },
+    
     async readyUp() {
       this.isReady = true;
      await this.socketStore.channel.push('ready_up', { })

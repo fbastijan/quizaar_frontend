@@ -7,6 +7,7 @@
             <h1 class="text-2xl font-bold mb-4 text-red-500" v-if="localTimeLeft === 0">Time is up!</h1>
             <h2 class="text-2xl font-bold mb-4">Question</h2>
             <p class="text-lg">{{ question.text }}</p>
+            <p class="text-sm text-gray-500 mb-4" v-if="isClosed">Correct Answer: {{ question.answer }}</p>
 
 
         </div>
@@ -22,13 +23,17 @@
             class="flex items-center gap-4 cursor-pointer transition-colors duration-200
                    p-4 rounded-xl shadow-lg h-full w-full font-semibold
                    border border-black bg-white text-black
-                   hover:bg-black hover:text-white"
-            :class="isClosed ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''"
+                   hover:bg-black hover:text-white "
+            :class="[
+              isClosed ? 'opacity-50 cursor-not-allowed pointer-events-none' : '',
+              selectedOption === option ? 'bg-black text-white ring-4 ring-blue-400 border-blue-500 !bg-black' : ''
+            ]"
           >
           <span
             class="flex items-center justify-center rounded-full border-2 border-black bg-white text-black font-bold w-12 h-12 text-xl
                    mr-2 transition-colors duration-200
                    hover:bg-black hover:text-white"
+            :class="selectedOption === option ? 'bg-black text-white border-blue-500 !bg-black' : ''"
           >
             {{ String.fromCharCode(65 + idx) }}
           </span>
@@ -42,13 +47,14 @@
           class="col-span-2"
           placeholder="Type your answer here..."
           v-model="userAnswer"
+          :disabled="isClosed"
         />
         <Button @click="answerQuestion(userAnswer)" class="col-span-2" :disabled="isClosed">
           Submit
         </Button>
 
       </div>
-
+      
         </div>
       
     </div>
@@ -60,6 +66,7 @@
 <script>
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+
  export default {
     props: {
       question: {
@@ -74,6 +81,10 @@ import { Button } from '@/components/ui/button';
           type: Boolean,
           required: true,
         },
+        answer: {
+          type: Object,
+          default: {data: {text: ''}},
+        }
     },
     components: {
         Textarea,
@@ -84,7 +95,9 @@ import { Button } from '@/components/ui/button';
     return {
         localTimeLeft: 0,
         userAnswer: '',
-        timer: null, // <-- Add this line to ensure timer is tracked
+        timer: null,
+        selectedOption: null, 
+
     
 
       correctAnswer: 'Paris',
@@ -101,22 +114,35 @@ import { Button } from '@/components/ui/button';
        question: {
       deep: true,
       handler() {
-        // Always reset timer when question changes
+       
         this.localTimeLeft = this.time_left;
         this.startTimer();
+        this.selectedOption = null; 
+        this.userAnswer = ''; 
+    },},
+      answer: {
+    immediate: true,
+    handler(newVal) {
+      if (newVal && typeof newVal === 'object' && newVal.data && newVal.data.text) {
+        this.selectedOption = newVal.data.text;
+      } else if (typeof newVal === 'string') {
+        this.selectedOption = newVal;
+      } else {
+        this.selectedOption = null;
       }
     }
+  }
+
   
   },
 
   methods: {
- answerQuestion(answer) {
-        
-        this.$emit('answer', answer);
-        this.userAnswer = ''; 
-
-
- },
+    answerQuestion(answer) {
+      if (this.question.options && this.question.options.length > 0) {
+        this.selectedOption = answer; 
+      }
+      this.$emit('answer', answer);
+    },
       startTimer() {
       this.clearTimer();
       if (this.localTimeLeft > 0) {
@@ -148,6 +174,8 @@ import { Button } from '@/components/ui/button';
   beforeUnmount() {
     this.clearTimer();
   },
+
+
  }
 
 

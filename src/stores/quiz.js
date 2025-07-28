@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import quizApi from '@/api/Quiz.api';
 import router from '@/router';
-
+import { toast } from 'vue-sonner';
 
 
 export const useQuizStore = defineStore('quiz', {
@@ -106,6 +106,9 @@ export const useQuizStore = defineStore('quiz', {
 },   
     async quizEnd(channel, callback) {
         channel.on('quiz_ended', (response) => {
+            
+            this.activeQuiz = null; 
+            toast.success("Quiz has ended!"); 
            callback(response);
            
         });

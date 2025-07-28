@@ -32,6 +32,7 @@ import { useScoreStore } from '@/stores/score';
 import { useQuizStore } from '@/stores/quiz';
 import { Button } from '@/components/ui/button';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
 import {
   Tabs,
   TabsContent,
