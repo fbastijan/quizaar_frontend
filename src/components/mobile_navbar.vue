@@ -55,37 +55,48 @@ const accountStore = useAccountStore()
     
         <ul>
           <li>
-            <router-link to="/" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" >
+            <SheetClose as-child>
+              <router-link to="/" class="ms-6 flex w-full items-center py-2 text-lg font-semibold">
                 Home
-            </router-link>
+              </router-link>
+            </SheetClose>
             </li>
             <li>
-            <router-link to="/quiz" class="ms-6 flex w-full items-center py-2 text-lg font-semibold">
+            <SheetClose as-child>
+              <router-link to="/quiz" class="ms-6 flex w-full items-center py-2 text-lg font-semibold">
                 Quiz
-            </router-link>
+              </router-link>
+            </SheetClose>
             </li>
-           
-             <br>
+            <br>
             <li>
-            <router-link to="/login" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore">
+            <SheetClose as-child>
+              <router-link to="/login" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore.accountData">
                 Login
-            </router-link>
+              </router-link>
+            </SheetClose>
             </li>
             <li>
-            <router-link to="/register" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore">
+            <SheetClose as-child>
+              <router-link to="/register" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="!accountStore.accountData">
                 Register
-            </router-link>
+              </router-link>
+            </SheetClose>
             </li>
            
               <li>
-            <router-link to="/account/settings" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="accountStore">
+            <SheetClose as-child>
+              <router-link to="/account/settings" class="ms-6 flex w-full items-center py-2 text-lg font-semibold" v-if="accountStore.accountData">
                 Settings
-            </router-link>
+              </router-link>
+            </SheetClose>
             </li>
              <li>
-            <a class="ms-6 flex w-full items-center py-2 text-lg font-semibold" href="#" v-if="accountStore" @click="logOut">
+            <SheetClose as-child>
+              <a class="ms-6 flex w-full items-center py-2 text-lg font-semibold" href="#" v-if="accountStore.accountData" @click="logOut">
                 Logout
-            </a>
+              </a>
+            </SheetClose>
             </li>
 
         </ul>
