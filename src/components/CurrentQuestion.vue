@@ -152,7 +152,7 @@ import { Button } from '@/components/ui/button';
           }
           if (this.localTimeLeft === 0) {
             this.clearTimer();
-            // Optionally emit an event here, e.g. this.$emit('time-up')
+           
           }
         }, 1000);
       }

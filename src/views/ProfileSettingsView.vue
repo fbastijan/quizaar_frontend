@@ -6,7 +6,7 @@
         </CardHeader>
         <CardContent class="space-y-6">
             <p class="text-gray-500">Manage your profile settings and preferences.</p>
-            <!-- Additional content can be added here -->
+       
         
     
     <Tabs class=" mt-12 " defaultValue="account">  
@@ -35,7 +35,7 @@
 
                 </CardContent>
                 <CardFooter>
-                    <!-- Profile content goes here -->
+                 
                 </CardFooter>
             </Card>
         </TabsContent>
@@ -114,14 +114,14 @@ import { useAccountStore } from '@/stores/account';
                 new_email: '',
                 username: '',
                 bio: '',
-                // Define any data properties needed for the profile settings view
+               
             };
         },
        
         methods: {
          
            updatePassword(password) {
-                // Logic to update the password
+           
                 if (this.new_password === this.confirm_password) {
                     this.accountStore.updateAccountProfile({ 
                         hash_password: this.new_password }, password)
@@ -140,7 +140,7 @@ import { useAccountStore } from '@/stores/account';
                 }
             },
             updateEmail(password) {
-                // Logic to update the email
+               
                 this.accountStore.updateAccountProfile({ email: this.new_email }, password)
                     .then(() => {
                         toast.success("Email updated successfully");
@@ -152,7 +152,7 @@ import { useAccountStore } from '@/stores/account';
                     });
             },
             updateUsername() {
-                // Logic to update the username
+              
                 this.accountStore.updateUserProfile({ full_name: this.username })
                     .then(() => {
                         toast.success("Username updated successfully");
@@ -163,7 +163,7 @@ import { useAccountStore } from '@/stores/account';
                     });
             },
             updateBio() {
-                // Logic to update the bio
+               
                 this.accountStore.updateUserProfile({ biography: this.bio })
                     .then(() => {
                         toast.success("Bio updated successfully");

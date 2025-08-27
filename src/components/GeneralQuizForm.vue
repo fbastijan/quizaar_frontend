@@ -21,9 +21,12 @@
             wrap="soft"
             placeholder="Description of your quiz"
             class="h-24 resize-none break-words w-full"
+            required
             v-model="description"
           />
         </div>
+
+        
       </form>
     </CardContent>
     <CardFooter class="flex justify-between px-6 pb-6">

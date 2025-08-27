@@ -80,11 +80,7 @@
 <script>
 import QuizQuestions from '@/components/QuizQuestions.vue';
 import { ref } from 'vue'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '@/components/ui/resizable'
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from '@/components/ui/button'
@@ -100,9 +96,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default {
   name: 'ActiveQuiz',
   components: {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
+  
     Button,
     Dialog,
     DialogTrigger,

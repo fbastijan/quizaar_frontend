@@ -34,7 +34,7 @@ const auth ={
   async getUser() {
     let token = localStorage.getItem("token");
     if (!token) {
-      return null; // or throw an error
+      return null; 
     }
     let response = await Service.get("/accounts/current", {
 

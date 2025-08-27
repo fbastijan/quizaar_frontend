@@ -38,6 +38,9 @@
           </div>
           <div class="text-right text-sm mt-1">Selected: <b>{{ difficultyLabel }}</b></div>
 
+          <Label class="mt-3">Time limit(sec):</Label>
+          <Input id="time-limit" type="number" v-model="parameters.timeLimit" class="w-50" default-value="60" />
+
           <Label class="mt-3">Additional context</Label>
           <Textarea id="description" placeholder="Do you want to specify anything?" class="h-24 resize-none break-words w-full" v-model="parameters.context"/>
         </div>
@@ -121,7 +124,8 @@ export default {
         topic: '',
         questions: 10,  
         difficulty: '',
-        context: ''
+        context: '',
+        timeLimit: 60
       }
     }
 
@@ -144,7 +148,7 @@ export default {
   },
   computed: {
     difficultyLabel() {
-      // slide is 1-based, array is 0-based
+      
       return this.difficultyLabels[this.slide - 1]
     }
   }

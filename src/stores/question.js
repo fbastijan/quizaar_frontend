@@ -57,9 +57,6 @@ export const useQuestionStore = defineStore('question', {
     this.timeLeft = response.time_left || 0;
     if (onServed) onServed();
   });
-
- 
-    
    },  
    },
   

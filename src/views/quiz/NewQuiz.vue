@@ -135,7 +135,9 @@ export default {
       let response;
       try {
         
-           response = await this.quizStore.createQuiz( {quiz: {...this.GeneralQuizForm}}, parameters);
+           response = await this.quizStore.createQuiz( {quiz: {...this.GeneralQuizForm,
+            question_time_limit: parameters.timeLimit
+           }}, parameters);
 
          
              

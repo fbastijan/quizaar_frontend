@@ -1,7 +1,7 @@
 <template>
     <div class="flex justify-center mt-12">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:mx-32 sm:mx-10 mx-2 max-w-3xl">
-        <!-- Join Quiz Card -->
+  
         <Card class="col-span-1 p-4 max-w-md mx-auto flex flex-col h-full">
             <CardHeader>
                 <CardTitle class="text-xl">Join Quiz</CardTitle>
@@ -18,7 +18,7 @@
                 <Button @click="goToLobby" size="sm">Join<ChevronRight class="size-4"/></Button>
             </CardFooter>
         </Card>
-        <!-- Create Quiz Card -->
+    
         <Card class="col-span-1 p-4 max-w-md mx-auto flex flex-col h-full">
             <CardHeader>
                 <CardTitle class="text-xl">Create a New Quiz</CardTitle>
@@ -42,7 +42,7 @@
 </template>
 
 <script >
-// Import shadcn components
+
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'

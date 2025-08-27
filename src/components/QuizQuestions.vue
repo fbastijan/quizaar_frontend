@@ -87,7 +87,7 @@ export default {
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.questions.length / 5); // Assuming 10 questions per page
+      return Math.ceil(this.questions.length / 5); 
     },
     isThereNextPage() {
       return this.current_page < this.totalPages;

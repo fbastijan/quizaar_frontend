@@ -99,7 +99,7 @@ export default {
 
   computed:{
     dateAndTime() {
-      // Returns a function to parse ISO date strings like "2025-07-03T18:12:23Z"
+    
       return (quiz_date) => {
         if (!quiz_date) return '';
         const date = new Date(quiz_date);
