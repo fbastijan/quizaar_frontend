@@ -1,11 +1,9 @@
 **Aplikacija za provođenje kvizova potpomognuta velikim jezičnim modelima**
-Završni rad Autor: Stjepan Markovčić
 
-Mentor: doc. dr. sc. Darko Etinger
+Završni rad Autor: Filip Bastijanić
+Mentor doc. dr. sc. Nikola Tanković
 
-Komentor: doc. dr. sc. Nikola Tanković
-
-Sveučilište Jurja Dobrile u Puli, Fakultet informatike
+**Sveučilište Jurja Dobrile u Puli, Fakultet informatike**
 Sažetak: 
 U ovom radu istražuje se primjena velikih jezičnih modela u razvoju aplikacija za provodenje kvizova. Fokusira se na implementaciju sustava u Elixir
 programskom jeziku, koji omogućuje komunikaciju u stvarnom vremenu i
