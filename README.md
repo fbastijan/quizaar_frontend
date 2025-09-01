@@ -28,5 +28,5 @@ Za testiranje aplikacije možete koristiti sljedeće podatke:
 
 ##  Dokumentacija  
 - **Završni rad:** [ovdje](https://github.com/fbastijan/quizaar_frontend/blob/master/Zavrsni_final.pdf)
- **Backend:** [GitHub](https://github.com/fbastijan/quizaar)
+- **Backend:** [GitHub](https://github.com/fbastijan/quizaar)
 
