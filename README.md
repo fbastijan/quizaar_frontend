@@ -12,7 +12,8 @@ Mentor: *doc. dr. sc. Nikola Tanković*
 U ovom radu istražuje se primjena velikih jezičnih modela u razvoju aplikacija za provodenje kvizova. Fokusira se na implementaciju sustava u Elixir programskom jeziku, koji omogućuje komunikaciju u stvarnom vremenu i dinamičko generiranje pitanja. Aplikacija nudi korisnicima mogućnost interaktivnog sudjelovanja u kvizovima, gdje se pitanja generiraju na temelju unosa korisnika i odgovori se evaluiraju u stvarnom vremenu. Na taj način rječava problem postojećih rješenja, te kreiranje i vodenje kvizova postaje jednostavnije i učinkovitije.
 
 ---
-
+Ip adressa Quizaar servisa:
+http://116.203.210.54:8081/login
 ##  Testni korisnik  
 Za testiranje aplikacije možete koristiti sljedeće podatke:  
 
