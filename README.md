@@ -1,5 +1,24 @@
-# Vue 3 + Vite
+**Aplikacija za provođenje kvizova potpomognuta velikim jezičnim modelima**
+Završni rad Autor: Stjepan Markovčić
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Mentor: doc. dr. sc. Darko Etinger
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+Komentor: doc. dr. sc. Nikola Tanković
+
+Sveučilište Jurja Dobrile u Puli, Fakultet informatike
+Sažetak: 
+U ovom radu istražuje se primjena velikih jezičnih modela u razvoju aplikacija za provodenje kvizova. Fokusira se na implementaciju sustava u Elixir
+programskom jeziku, koji omogućuje komunikaciju u stvarnom vremenu i
+dinamičko generiranje pitanja. Aplikacija nudi korisnicima mogućnost interaktivnog sudjelovanja u kvizovima, gdje se pitanja generiraju na temelju
+unosa korisnika i odgovori se evaluiraju u stvarnom vremenu. Na taj način
+rječava problem postojećih rješenja, te kreiranje i vodenje kvizova postaje
+jednostavnije i učinkovitije.
+
+Testni user: 
+username: test@test.hr 
+email: test@test.hr
+password: 12345678
+
+Dokumentacija: 
+
+Backend: Github
